@@ -17,6 +17,7 @@ export default function CenterBlock() {
           <Track />
           <Track />
           <Track />
+          <Track />
         </div>
       </div>
     </div>
