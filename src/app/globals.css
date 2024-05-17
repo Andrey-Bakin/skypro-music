@@ -34,3 +34,64 @@ body {
   font-family: "Montserrat", sans-serif;
   color: #ffffff;
 }
+
+._btn-icon:hover svg {
+  fill: transparent;
+  stroke: #acacac;
+  cursor: pointer;
+}
+
+._btn-icon:active svg {
+  fill: transparent;
+  stroke: #ffffff;
+  cursor: pointer;
+}
+
+._btn-icon:active .track-play__like-svg,
+._btn-icon:active .track-play__dislike-svg {
+  fill: #696969;
+  stroke: #ffffff;
+  cursor: pointer;
+}
+
+
+
+.player__btn-prev,
+.player__btn-play,
+.player__btn-next,
+.player__btn-repeat,
+.player__btn-shuffle {
+  padding: 5px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.player__btn-prev {
+  margin-right: 23px;
+}
+
+.player__btn-play {
+  margin-right: 23px;
+}
+
+.player__btn-next {
+  margin-right: 28px;
+  fill: #a53939;
+}
+
+.player__btn-repeat {
+  margin-right: 24px;
+}
+
+.player__btn-shuffle {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
