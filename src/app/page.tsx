@@ -37,7 +37,7 @@ export default function Home() {
                 <input className="search__text" type="search" placeholder="Поиск" name="search" />
               </div>
               <h2 className="centerblock__h2">Треки</h2>
-              <div className="centerblock__filter filter">
+              {/* <div className="centerblock__filter filter">
                 <div className="filter__title">Искать по:</div>
                 <div className="filter__button button-author _btn-text">
                   исполнителю
@@ -46,7 +46,7 @@ export default function Home() {
                   году выпуска
                 </div>
                 <div className="filter__button button-genre _btn-text">жанру</div>
-              </div>
+              </div> */}
               <div className="centerblock__content playlist-content">
                 <div className="content__title playlist-title">
                   <div className="playlist-title__col col01">Трек</div>
