@@ -6,7 +6,7 @@ export default function Home() {
     <div className="wrapper">
         <div className="container">
           <main className="main">
-            <nav className="main__nav nav">
+            {/* <nav className="main__nav nav">
               <div className="nav__logo logo">
                 <img className="logo__image" src="img/logo.png" />
               </div>
@@ -28,7 +28,7 @@ export default function Home() {
                   </li>
                 </ul>
               </div>
-            </nav>
+            </nav> */}
             <div className="main__centerblock centerblock">
               <div className="centerblock__search search">
                 <svg className="search__svg">
