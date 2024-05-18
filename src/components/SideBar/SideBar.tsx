@@ -8,7 +8,7 @@ export default function SideBar() {
         <p className={styles.sidebarPersonalName}>Sergey.Ivanov</p>
         <div className={styles.sidebarIcon}>
           <svg>
-            <use xlinkHref="img/icon/sprite.svg#logout" />
+            <use xlinkHref="image/icon/sprite.svg#logout" />
           </svg>
         </div>
       </div>
@@ -18,7 +18,7 @@ export default function SideBar() {
             <a className={styles.sidebarLink} href="#">
               <Image
                 className={styles.sidebarImg}
-                src="/img/playlist01.png"
+                src="/image/playlist01.png"
                 alt="Плейлист дня"
                 width={250}
                 height={150}
@@ -29,7 +29,7 @@ export default function SideBar() {
             <a className={styles.sidebarLink} href="#">
               <Image
                 className={styles.sidebarImg}
-                src="/img/playlist02.png"
+                src="/image/playlist02.png"
                 alt="100 танцевальных хитов"
                 width={250}
                 height={150}
@@ -40,7 +40,7 @@ export default function SideBar() {
             <a className={styles.sidebarLink} href="#">
               <Image
                 className={styles.sidebarImg}
-                src="/img/playlist03.png"
+                src="/image/playlist03.png"
                 alt="Инди заряд"
                 width={250}
                 height={150}

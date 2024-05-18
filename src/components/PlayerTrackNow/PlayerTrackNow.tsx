@@ -7,7 +7,7 @@ export default function PlayerTrackNow() {
       <div className={styles.trackPlayContain}>
         <div className={styles.trackPlayImage}>
           <svg className={styles.trackPlaySvg}>
-            <use xlinkHref="/img/icon/sprite.svg#icon-note" />
+            <use xlinkHref="/image/icon/sprite.svg#icon-note" />
           </svg>
         </div>
         <div className={styles.trackPlayAuthor}>
@@ -24,12 +24,12 @@ export default function PlayerTrackNow() {
       <div className={styles.trackPlayLikeDis}>
         <div className={(classNames(styles.trackPlayLike), "_btn-icon")}>
           <svg className={styles.trackPlayLikeSvg}>
-            <use xlinkHref="/img/icon/sprite.svg#icon-like" />
+            <use xlinkHref="/image/icon/sprite.svg#icon-like" />
           </svg>
         </div>
         <div className={(classNames(styles.trackPlayDislike), "_btn-icon")}>
           <svg className={styles.trackPlayDislikeSvg}>
-            <use xlinkHref="/img/icon/sprite.svg#icon-dislike" />
+            <use xlinkHref="/image/icon/sprite.svg#icon-dislike" />
           </svg>
         </div>
       </div>

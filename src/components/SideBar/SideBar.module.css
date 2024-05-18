@@ -1,6 +1,9 @@
 .sidebarMain {
     max-width: 418px;
     padding: 20px 90px 20px 78px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
   }
 
 .sidebarPersonal {
@@ -39,7 +42,7 @@
 
   .sidebarBlock {
     height: 100%;
-    padding: 240px 0 0 0;
+    padding: 200px 0 0 0;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;

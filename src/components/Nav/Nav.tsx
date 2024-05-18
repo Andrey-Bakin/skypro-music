@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import styles from "./Nav.module.css"
+import styles from "./Nav.module.css";
 
 export default function Nav() {
   return (
@@ -9,7 +9,7 @@ export default function Nav() {
         <Image
           alt="логотип скайпро музыка"
           className={styles.logoImage}
-          src="/img/logo.png"
+          src="/image/logo.png"
           width={113}
           height={17}
         />

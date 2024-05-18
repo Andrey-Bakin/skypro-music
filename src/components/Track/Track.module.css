@@ -109,9 +109,10 @@
     color: #696969;
   }
   
-  /* .trackTime {
-    font-style: normal;
-  } */
+  .trackTime {
+    display: flex;
+    align-items: center
+  }
   
   .trackTimeSvg {
     width: 14px;

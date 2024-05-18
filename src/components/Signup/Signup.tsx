@@ -11,7 +11,7 @@ export default function Signup() {
             <Link href="/">
               <div className={styles.modalLogo}>
                 <Image
-                  src="/img/logo_modal.png"
+                  src="/image/logo_modal.png"
                   alt="logo"
                   width={140}
                   height={21}
