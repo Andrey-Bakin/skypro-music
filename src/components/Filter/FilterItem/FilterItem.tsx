@@ -1,6 +1,12 @@
 import classNames from "classnames";
 import styles from "./FilterItem.module.css";
-import { FilterItemType } from "@/types";
+
+type FilterItemType = {
+  title: string;
+  list: string[];
+  handleFilterClick: (newFilter: string) => void;
+  isOpened: boolean;
+};
 
 export default function FilterItem({
   handleFilterClick,

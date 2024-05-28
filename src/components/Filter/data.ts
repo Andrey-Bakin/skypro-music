@@ -1,25 +1,44 @@
-export const filters = [
-    {
-      title: "Исполнителю",
-      list: [
-        "ivan",
-        "petya",
-        "ivan",
-        "petya",
-        "ivan",
-        "petya",
-        "ivan",
-        "petya",
-        "ivan",
-        "petya",
-      ],
-    },
-    {
-      title: "Году выпуска",
-      list: ["2000", "2001"],
-    },
-    {
-      title: "Жанру",
-      list: ["рок", "рэп"],
-    },
-  ];
+// export const filters = [
+//     {
+//       title: "Исполнителю",
+//       list: [
+//         "Alexander Nakarada",
+//         "Frank Schroter",
+//         "Kevin Macleod",
+//         "Mixkit",
+//         "-",
+//         "-",
+//         "-",
+//         "-",
+//         "Waltz Piano",
+//         "Winniethemoog",
+//         "AFM",
+//         "Bobby Marleni",
+//         "Brian Holtz",
+//         "Fanz",
+//         "Luke",
+//         "Ryan Craig Martin",
+//         "Sascha Ende",
+//         "Starforsh",
+//         "Voisin",
+//         "Wova",
+//         "Alexander Nakarada",
+//         "Audionautix",
+//         "Kevin Macleodburn",
+//         "MED",
+//         "MED",
+//         "-",
+//         "Tim Kulig",
+//         "Winniethemoog",
+//         "Winniethemoog"
+//       ],
+//     },
+//     {
+//       title: "Году выпуска",
+//       list: ["По умолчанию","Сгачала новые", "Сначала старые"],
+//     },
+//     {
+//       title: "Жанру",
+//       list: ["Классическая музыка", "Электронная музыка", "Рок музыка"],
+//     },
+//   ];
