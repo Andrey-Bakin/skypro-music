@@ -1,7 +1,12 @@
+import { TrackType } from "@/types";
 import styles from "./PlayerTrackNow.module.css";
 import classNames from "classnames";
 
-export default function PlayerTrackNow() {
+type PlayerTrackNowType = {
+  track: TrackType;
+};
+
+export default function PlayerTrackNow({ track }: PlayerTrackNowType ) {
   return (
     <div className={styles.playerTrackPlay}>
       <div className={styles.trackPlayContain}>
@@ -11,14 +16,14 @@ export default function PlayerTrackNow() {
           </svg>
         </div>
         <div className={styles.trackPlayAuthor}>
-          <a className={styles.trackPlayAuthorLink} href="http://">
-            Ты та...
-          </a>
+          <span className={styles.trackPlayAuthorLink} >
+            {track?.name}
+          </span>
         </div>
         <div className={styles.trackPlayAlbum}>
-          <a className={styles.trackPlayAlbumLink} href="http://">
-            Баста
-          </a>
+          <span className={styles.trackPlayAlbumLink} >
+            {track?.author}
+          </span>
         </div>
       </div>
       <div className={styles.trackPlayLikeDis}>
