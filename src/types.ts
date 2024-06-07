@@ -17,5 +17,6 @@
     logo: string | null;
     track_file: string;
     stared_user: UserType[];
+    onClick: () => void;
   };
 
