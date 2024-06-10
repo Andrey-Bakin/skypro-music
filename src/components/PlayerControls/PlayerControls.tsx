@@ -1,4 +1,6 @@
+import { useAppDispatch, useAppSelector } from "@/hooks";
 import styles from "./PlayerControls.module.css";
+import { setIsPlaying, setIsShuffle, setNextTrack, setPreviousTrack } from "@/store/features/playlistSlice";
 
 type PlayerControlsType = {
   togglePlay: () => void;
@@ -13,14 +15,28 @@ export default function PlayerControls({
   isLooping,
   toggleLoop,
 }: PlayerControlsType) {
-
-  function nextSong() {
-    return alert("еще не реализовано")
-  }
+  const isShuffle = useAppSelector((state) => state.playlist.isShuffle);
+  const dispatch = useAppDispatch();
+  
+  const HandleNextTrack = () => {
+    dispatch(setNextTrack());
+    dispatch(setIsPlaying(true));
+  };
+  const HandlePreviousTrack = () => {
+    dispatch(setPreviousTrack());
+    dispatch(setIsPlaying(true));
+  };
+  const HandleShuffle = () => {
+    if (isShuffle) {
+      dispatch(setIsShuffle(false));
+    } else {
+      dispatch(setIsShuffle(true));
+    }
+  };
 
   return (
     <div className={styles.playerControls}>
-      <div onClick={nextSong} className="player__btn-prev">
+      <div onClick={HandlePreviousTrack} className="player__btn-prev _btn">
         <svg className={styles.playerBtnPrevSvg}>
           <use xlinkHref="/image/icon/sprite.svg#icon-prev" />
         </svg>
@@ -34,7 +50,7 @@ export default function PlayerControls({
           />
         </svg>
       </div>
-      <div onClick={nextSong} className="player__btn-next">
+      <div onClick={HandleNextTrack} className="player__btn-next _btn">
         <svg className={styles.playerBtnNextSvg}>
           <use xlinkHref="/image/icon/sprite.svg#icon-next" />
         </svg>
@@ -48,9 +64,11 @@ export default function PlayerControls({
           />
         </svg>
       </div>
-      <div onClick={nextSong} className="player__btn-shuffle _btn-icon">
+      <div onClick={HandleShuffle} className="player__btn-shuffle _btn-icon">
         <svg className={styles.playerBtnShuffleSvg}>
-          <use xlinkHref="/image/icon/sprite.svg#icon-shuffle" />
+          <use xlinkHref={`image/icon/sprite.svg#${
+              isShuffle ? "icon-shuffle-toggled" : "icon-shuffle"
+            }`} />
         </svg>
       </div>
     </div>
