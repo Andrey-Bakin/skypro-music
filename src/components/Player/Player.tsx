@@ -8,14 +8,22 @@ import VolumeBar from "../VolumeBar/VolumeBar";
 import styles from "./Player.module.css";
 import ProgressBar from "../ProgressBar/ProgressBar";
 import { durationFormat } from "@/utils";
+import { useAppDispatch, useAppSelector } from "@/hooks";
+import { setIsPlaying, setNextTrack } from "@/store/features/playlistSlice";
 
-type Prop = {
-  track: TrackType;
-}
+// type Prop = {
+//   track: TrackType;
+// }
 
-export default function Player({ track }: Prop) {
+export default function Player() {
+  const currentTrack = useAppSelector((state) => state.playlist.currentTrack);
+  const isPlaying = useAppSelector((state) => state.playlist.isPlaying);
+
   const [currentTime, setCurrentTime] = useState<number>(0);
-  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  // const [isPlaying, setIsPlaying] = useState<boolean>(false);
+
+  const dispatch = useAppDispatch();
+
   const [volume, setVolume] = useState<number>(0.5);
   const [isLooping, setIsLooping] = useState<boolean>(false);
   const audioRef = useRef<null | HTMLAudioElement>(null);
@@ -23,13 +31,28 @@ export default function Player({ track }: Prop) {
   const duration = audioRef.current?.duration || 0;
 
   useEffect(() => {
+    if (isPlaying) {
+      audioRef.current?.play();
+    }
+  }, [isPlaying, currentTrack]);
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    const handdleEnded = () => {
+      dispatch(setNextTrack());
+    };
+
+    audio?.addEventListener("ended", handdleEnded);
+
+    return () => audio?.removeEventListener("ended", handdleEnded);
+  }, [dispatch, audioRef.current]);
+
+  useEffect(() => {
     if (audioRef.current) {
       audioRef.current.volume = volume;
       audioRef.current.play();
-      setIsPlaying(true);
     }
     audioRef.current?.addEventListener("ended", () => {
-      setIsPlaying(false);
       setCurrentTime(0);
     });
   }, [volume, duration]);
@@ -38,10 +61,11 @@ export default function Player({ track }: Prop) {
     if (audioRef.current) {
       if (isPlaying) {
         audioRef.current.pause();
+        dispatch(setIsPlaying(false));
       } else {
         audioRef.current.play();
+        dispatch(setIsPlaying(true))
       }
-      setIsPlaying((prev) => !prev);
     }
   };
 
@@ -70,42 +94,48 @@ export default function Player({ track }: Prop) {
   };
 
   return (
-    <div className={styles.bar}>
-      <div className={styles.barContent}>
-        <audio
-          src={track?.track_file}
-          ref={audioRef}
-          onTimeUpdate={(e) => setCurrentTime(e.currentTarget.currentTime)}
-        />
-        <div className={styles.trackTimeBlock}>
-          <div>{durationFormat(currentTime)}</div>
-          <div> / </div>
-          <div>{durationFormat(duration)}</div>
-        </div>
-        <ProgressBar
-          max={duration}
-          value={currentTime}
-          step={0.01}
-          onChange={handleSeek}
-        />
-        <div className={styles.barPlayerBlock}>
-          <div className={styles.barPlayer}>
-            <PlayerControls 
-              togglePlay={togglePlay} 
-              isPlaying={isPlaying}
-              toggleLoop={toggleLoop}
-              isLooping={isLooping}/>
-            <PlayerTrackNow track={track}/>
-          </div>
-          <VolumeBar 
-            min={0}
-            max={1}
-            step={0.01}
-            value={volume}
-            onChange={handleVolume}
+    <>
+      {currentTrack &&(
+        <div className={styles.bar}>
+        <div className={styles.barContent}>
+          <audio
+            src={currentTrack.track_file}
+            ref={audioRef}
+            onTimeUpdate={(e) => setCurrentTime(e.currentTarget.currentTime)}
           />
+          <div className={styles.trackTimeBlock}>
+            <div>{durationFormat(currentTime)}</div>
+            <div> / </div>
+            <div>{durationFormat(duration)}</div>
+          </div>
+          <ProgressBar
+            max={duration}
+            value={currentTime}
+            step={0.01}
+            onChange={handleSeek}
+          />
+          <div className={styles.barPlayerBlock}>
+            <div className={styles.barPlayer}>
+              <PlayerControls 
+                togglePlay={togglePlay} 
+                isPlaying={isPlaying}
+                toggleLoop={toggleLoop}
+                isLooping={isLooping}/>
+              <PlayerTrackNow track={currentTrack}/>
+            </div>
+            <VolumeBar 
+              min={0}
+              max={1}
+              step={0.01}
+              value={volume}
+              onChange={handleVolume}
+            />
+          </div>
         </div>
       </div>
-    </div>
+      )}
+      
+    </>
+    
   );
 }

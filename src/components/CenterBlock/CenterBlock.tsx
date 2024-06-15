@@ -7,10 +7,9 @@ import { TrackType } from "@/types";
 
 type Props = {
   tracks: TrackType[];
-  setTrack: (param: TrackType) => void;
 };
 
-export default function CenterBlock({ tracks, setTrack }: Props) {
+export default function CenterBlock({ tracks }: Props) {
   return (
     <div className={styles.mainCenterblock}>
       <Search />
@@ -20,20 +19,7 @@ export default function CenterBlock({ tracks, setTrack }: Props) {
         <PlaylistHeader />
         <div className={styles.contentPlaylist}>
           {tracks.map((trackData) => (
-            <Track
-              onClick={() => setTrack(trackData)}
-              key={trackData.id}
-              id={trackData.id}
-              name={trackData.name}
-              author={trackData.author}
-              release_date={trackData.release_date}
-              genre={trackData.genre}
-              duration_in_seconds={trackData.duration_in_seconds}
-              album={trackData.album}
-              logo={trackData.logo}
-              track_file={trackData.track_file}
-              stared_user={trackData.stared_user}
-            />
+            <Track key={trackData.id} track={trackData} tracksData={tracks}/>
           ))}
         </div>
       </div>
