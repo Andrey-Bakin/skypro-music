@@ -1,44 +1,21 @@
-// export const filters = [
-//     {
-//       title: "Исполнителю",
-//       list: [
-//         "Alexander Nakarada",
-//         "Frank Schroter",
-//         "Kevin Macleod",
-//         "Mixkit",
-//         "-",
-//         "-",
-//         "-",
-//         "-",
-//         "Waltz Piano",
-//         "Winniethemoog",
-//         "AFM",
-//         "Bobby Marleni",
-//         "Brian Holtz",
-//         "Fanz",
-//         "Luke",
-//         "Ryan Craig Martin",
-//         "Sascha Ende",
-//         "Starforsh",
-//         "Voisin",
-//         "Wova",
-//         "Alexander Nakarada",
-//         "Audionautix",
-//         "Kevin Macleodburn",
-//         "MED",
-//         "MED",
-//         "-",
-//         "Tim Kulig",
-//         "Winniethemoog",
-//         "Winniethemoog"
-//       ],
-//     },
-//     {
-//       title: "Году выпуска",
-//       list: ["По умолчанию","Сгачала новые", "Сначала старые"],
-//     },
-//     {
-//       title: "Жанру",
-//       list: ["Классическая музыка", "Электронная музыка", "Рок музыка"],
-//     },
-//   ];
+type FilterType = {
+    title: string;
+    value: "author" | "genre" | "order";
+  };
+  
+  export const filters: FilterType[] = [
+    {
+      title: "Исполнителю",
+      value: "author",
+    },
+    {
+      title: "Жанру",
+      value: "genre",
+    },
+    {
+      title: "Году выпуска",
+      value: "order",
+    },
+  ];
+  
+  export const order = ["По умолчанию", "Сначала новые", "Сначала старые"];
