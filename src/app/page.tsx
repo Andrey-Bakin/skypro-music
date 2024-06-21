@@ -11,5 +11,5 @@ export default async function Home() {
     error = err instanceof Error ? "Ошибка при загрузке трека. "+ err.message : "Неизвестная ошибка"
   }  
 
-    return <Main tracks={tracks} />;
+    return <Main />;
   }
