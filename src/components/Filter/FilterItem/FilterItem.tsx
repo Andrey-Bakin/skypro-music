@@ -68,7 +68,7 @@ export default function FilterItem({
           : 0
         : list.length
     );
-  }, [list, orderList, value]);
+  }, [list, value]);
 
   getFilterList();
   return (
