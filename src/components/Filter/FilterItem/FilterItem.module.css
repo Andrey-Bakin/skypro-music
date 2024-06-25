@@ -1,87 +1,110 @@
+.titleFilterBox {
+  display: flex;
+  position: relative;
+}
+
 .filterButton {
-    font-style: normal;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 24px;
-    border: 1px solid #ffffff;
-    border-radius: 60px;
-    padding: 6px 20px;
-  }
-  
-  .filterButton:not(:last-child) {
-    margin-right: 10px;
-  }
-  
-  .btnText:hover {
-    border-color: #d9b6ff;
-    color: #d9b6ff;
-    cursor: pointer;
-  }
-  
-  .btnText:active {
-    border-color: #ad61ff;
-    color: #ad61ff;
-    cursor: pointer;
-  }
-  
-  .activeFilter {
-    border-color: #ad61ff;
-    color: #ad61ff;
-    cursor: pointer;
-  }
-  
-  .listContainer {
-    width: 248px;
-    height: auto;
-    padding: 34px;
-    margin-top: 12px;
-    margin-left: 0;
-    border-radius: 12px;
-    opacity: 0px;
-    background: #313131;
-    position: absolute;
-    cursor: default;
-  }
-  
-  .listBox {
-    width: 180px;
-    max-height: 237px;
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-    opacity: 0px;
-    overflow: auto;
-  }
-  
-  .listText {
-    font-family: "Montserrat", sans-serif;
-    font-size: 20px;
-    font-weight: 400;
-    line-height: 24px;
-    text-align: left;
-    color: #ffffff;
-  }
-  
-  .listText:hover {
-    cursor: pointer;
-    text-decoration: underline;
-  }
-  
-  .listText:active {
-    color: #b672ff;
-  }
-  
-  .listBox::-webkit-scrollbar {
-    width: 6px;
-  }
-  
-  .listBox::-webkit-scrollbar-track {
-    background: #4b4949;
-  }
-  
-  .listBox::-webkit-scrollbar-thumb {
-    height: 10px;
-    background-color: blue;
-    border-radius: 8px;
-    border: 3px solid #ffffff;
-  }
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  border: 1px solid #ffffff;
+  border-radius: 60px;
+  padding: 6px 20px;
+  margin-right: 10px;
+}
+
+.filterNumber {
+  position: absolute;
+  right: 0px;
+  bottom: 26px;
+  width: 26px;
+  height: 26px;
+  border-radius: 13px;
+  background: #ad61ff;
+  font-family: "Montserrat", sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 13px;
+  text-align: center;
+  padding: 6px;
+}
+
+.btnText:hover {
+  border-color: #d9b6ff;
+  color: #d9b6ff;
+  cursor: pointer;
+}
+
+/* .btnText:active {
+  border-color: #ad61ff;
+  color: #ad61ff;
+  cursor: pointer;
+} */
+
+.activeFilter {
+  border-color: #ad61ff;
+  color: #ad61ff;
+  cursor: pointer;
+}
+
+.listContainer {
+  width: 248px;
+  height: auto;
+  padding: 34px;
+  margin-top: 12px;
+  margin-left: 0;
+  border-radius: 12px;
+  opacity: 0px;
+  background: #313131;
+  position: absolute;
+  cursor: default;
+}
+
+.listBox {
+  width: 180px;
+  max-height: 237px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  opacity: 0px;
+  overflow: auto;
+}
+
+.listText {
+  font-family: "Montserrat", sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 24px;
+  text-align: left;
+  color: #ffffff;
+}
+
+.listTextSelected {
+  text-decoration: underline;
+  color: #b672ff;
+}
+
+.listText:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.listText:active {
+  color: #b672ff;
+}
+
+.listBox::-webkit-scrollbar {
+  width: 6px;
+}
+
+.listBox::-webkit-scrollbar-track {
+  background: #4b4949;
+}
+
+.listBox::-webkit-scrollbar-thumb {
+  height: 10px;
+  background-color: blue;
+  border-radius: 8px;
+  border: 3px solid #ffffff;
+}

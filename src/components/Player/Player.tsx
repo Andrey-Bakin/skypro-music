@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
 import { TrackType } from "@/types";
 import PlayerControls from "../PlayerControls/PlayerControls";
 import PlayerTrackNow from "../PlayerTrackNow/PlayerTrackNow";
@@ -11,17 +11,12 @@ import { durationFormat } from "@/utils";
 import { useAppDispatch, useAppSelector } from "@/hooks";
 import { setIsPlaying, setNextTrack } from "@/store/features/playlistSlice";
 
-// type Prop = {
-//   track: TrackType;
-// }
-
 export default function Player() {
   const currentTrack = useAppSelector((state) => state.playlist.currentTrack);
   const isPlaying = useAppSelector((state) => state.playlist.isPlaying);
 
   const [currentTime, setCurrentTime] = useState<number>(0);
-  // const [isPlaying, setIsPlaying] = useState<boolean>(false);
-
+  
   const dispatch = useAppDispatch();
 
   const [volume, setVolume] = useState<number>(0.5);
@@ -80,18 +75,18 @@ export default function Player() {
     setIsLooping((prev) => !prev);
   };
 
-  const handleSeek = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleSeek = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     if (audioRef.current) {
       audioRef.current.currentTime = Number(event.target.value);
     }
-  };
+  }, []);
 
-  const handleVolume = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleVolume = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     if (audioRef.current) {
       audioRef.current.volume = Number(event.target.value);
       setVolume(audioRef.current.volume);
     }
-  };
+  }, []);
 
   return (
     <>
