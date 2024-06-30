@@ -9,3 +9,14 @@ export async function getTracks() {
 
     return response.json();
 }
+
+export async function getPlaylist(id: string) {
+    const response = await fetch(baseUrl + "/selection/" + id);
+  
+    if (!response.ok) {
+      throw new Error("Ошибка при получении данных");
+    }
+  
+    const data = await response.json();
+    return data.items;
+  }
