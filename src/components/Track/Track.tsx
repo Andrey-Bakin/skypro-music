@@ -2,7 +2,7 @@
 
 import { TrackType } from "@/types";
 import styles from "./Track.module.css";
-import { durationFormat } from "@/utils";
+import { durationFormat } from "@/utils/durationFormat";
 import { useAppDispatch, useAppSelector } from "@/hooks";
 import { setCurrentTrack, setIsPlaying } from "@/store/features/playlistSlice";
 import classNames from "classnames";
