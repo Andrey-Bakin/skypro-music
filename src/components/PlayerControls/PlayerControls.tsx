@@ -66,7 +66,7 @@ export default function PlayerControls({
       </div>
       <div onClick={HandleShuffle} className="player__btn-shuffle _btn-icon">
         <svg className={styles.playerBtnShuffleSvg}>
-          <use xlinkHref={`image/icon/sprite.svg#${
+          <use xlinkHref={`/image/icon/sprite.svg#${
               isShuffle ? "icon-shuffle-toggled" : "icon-shuffle"
             }`} />
         </svg>

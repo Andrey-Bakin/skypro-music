@@ -1,13 +1,12 @@
 "use client";
 
 import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
-import { TrackType } from "@/types";
 import PlayerControls from "../PlayerControls/PlayerControls";
 import PlayerTrackNow from "../PlayerTrackNow/PlayerTrackNow";
 import VolumeBar from "../VolumeBar/VolumeBar";
 import styles from "./Player.module.css";
 import ProgressBar from "../ProgressBar/ProgressBar";
-import { durationFormat } from "@/utils";
+import { durationFormat } from "@/utils/durationFormat";
 import { useAppDispatch, useAppSelector } from "@/hooks";
 import { setIsPlaying, setNextTrack } from "@/store/features/playlistSlice";
 
@@ -16,7 +15,7 @@ export default function Player() {
   const isPlaying = useAppSelector((state) => state.playlist.isPlaying);
 
   const [currentTime, setCurrentTime] = useState<number>(0);
-  
+
   const dispatch = useAppDispatch();
 
   const [volume, setVolume] = useState<number>(0.5);
@@ -59,7 +58,7 @@ export default function Player() {
         dispatch(setIsPlaying(false));
       } else {
         audioRef.current.play();
-        dispatch(setIsPlaying(true))
+        dispatch(setIsPlaying(true));
       }
     }
   };
@@ -90,47 +89,46 @@ export default function Player() {
 
   return (
     <>
-      {currentTrack &&(
+      {currentTrack && (
         <div className={styles.bar}>
-        <div className={styles.barContent}>
-          <audio
-            src={currentTrack.track_file}
-            ref={audioRef}
-            onTimeUpdate={(e) => setCurrentTime(e.currentTarget.currentTime)}
-          />
-          <div className={styles.trackTimeBlock}>
-            <div>{durationFormat(currentTime)}</div>
-            <div> / </div>
-            <div>{durationFormat(duration)}</div>
-          </div>
-          <ProgressBar
-            max={duration}
-            value={currentTime}
-            step={0.01}
-            onChange={handleSeek}
-          />
-          <div className={styles.barPlayerBlock}>
-            <div className={styles.barPlayer}>
-              <PlayerControls 
-                togglePlay={togglePlay} 
-                isPlaying={isPlaying}
-                toggleLoop={toggleLoop}
-                isLooping={isLooping}/>
-              <PlayerTrackNow track={currentTrack}/>
-            </div>
-            <VolumeBar 
-              min={0}
-              max={1}
-              step={0.01}
-              value={volume}
-              onChange={handleVolume}
+          <div className={styles.barContent}>
+            <audio
+              src={currentTrack.track_file}
+              ref={audioRef}
+              onTimeUpdate={(e) => setCurrentTime(e.currentTarget.currentTime)}
             />
+            <div className={styles.trackTimeBlock}>
+              <div>{durationFormat(currentTime)}</div>
+              <div> / </div>
+              <div>{durationFormat(duration)}</div>
+            </div>
+            <ProgressBar
+              max={duration}
+              value={currentTime}
+              step={0.01}
+              onChange={handleSeek}
+            />
+            <div className={styles.barPlayerBlock}>
+              <div className={styles.barPlayer}>
+                <PlayerControls
+                  togglePlay={togglePlay}
+                  isPlaying={isPlaying}
+                  toggleLoop={toggleLoop}
+                  isLooping={isLooping}
+                />
+                <PlayerTrackNow track={currentTrack} />
+              </div>
+              <VolumeBar
+                min={0}
+                max={1}
+                step={0.01}
+                value={volume}
+                onChange={handleVolume}
+              />
+            </div>
           </div>
         </div>
-      </div>
       )}
-      
     </>
-    
   );
 }

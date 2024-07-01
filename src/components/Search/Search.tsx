@@ -1,3 +1,4 @@
+"use client"
 import { ChangeEvent, useState } from "react";
 import styles from "./Search.module.css";
 import { useAppDispatch } from "@/hooks";
@@ -15,7 +16,7 @@ export default function Search() {
   return (
     <div className={styles.centerblockSearch}>
       <svg className={styles.searchSvg}>
-        <use xlinkHref="image/icon/sprite.svg#icon-search" />
+        <use xlinkHref="/image/icon/sprite.svg#icon-search" />
       </svg>
       <input
         className={styles.searchText}

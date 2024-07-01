@@ -3,14 +3,9 @@ import { useState } from "react";
 import styles from "./Filter.module.css";
 import FilterItem from "./FilterItem/FilterItem";
 import { filters, order } from "./data";
-import { TrackType } from "@/types";
 import { useAppSelector } from "@/hooks";
 
-type Props = {
-  tracks: TrackType[];
-};
-
-export default function Filter({ tracks }: Props) {
+export default function Filter() {
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
 
   const authorsList = useAppSelector(
@@ -44,7 +39,6 @@ export default function Filter({ tracks }: Props) {
           title={filter.title}
           list={filterList(filter.title)}
           value={filter.value}
-          tracks={tracks}
         />
       ))}
     </div>
