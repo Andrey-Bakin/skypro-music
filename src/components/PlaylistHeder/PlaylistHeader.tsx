@@ -14,7 +14,7 @@ export default function PlaylistHeader() {
       </div>
       <div className={classNames(styles.playlistTitleColumn, styles.column04)}>
         <svg className={styles.playlistTitleSvg}>
-          <use xlinkHref="image/icon/sprite.svg#icon-watch" />
+          <use xlinkHref="/image/icon/sprite.svg#icon-watch" />
         </svg>
       </div>
     </div>

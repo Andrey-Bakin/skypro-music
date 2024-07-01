@@ -19,9 +19,8 @@ export default function TracksLayout({
           <Nav />
           <div className={styles.mainCenterblock}>
             <Search />
-            <h2 className={styles.centerblockH2}>Треки</h2>
             <div className={styles.centerblockContent}>
-              <Filter />
+              
               {children}
             </div>
           </div>

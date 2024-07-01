@@ -8,21 +8,26 @@ import styles from "./CenterBlock.module.css";
 export default function CenterBlock({
   tracks,
   playlist,
+  isLoading,
 }: {
   tracks: TrackType[];
   playlist: TrackType[];
+  isLoading: boolean;
 }) {
   return (
-    <>
+    <div className={styles.mainCenterblock}>
       <PlaylistHeader />
-      <div className={styles.contentPlaylist}>
-        {tracks?.length === 0
-          ? "Нет треков, удовлетворяющих условиям фильтра"
-          : ""}
-        {tracks?.map((track) => (
-          <Track key={track.id} track={track} tracksData={playlist} />
-        ))}
-      </div>
-    </>
+
+      {tracks?.length === 0 &&
+        isLoading &&
+        "Нет треков, удовлетворяющих условиям фильтра"}
+      {isLoading && (
+        <div className={styles.contentPlaylist}>
+          {tracks?.map((track) => (
+            <Track key={track.id} track={track} tracksData={playlist} />
+          ))}
+        </div>
+      )}
+    </div>
   );
 }
