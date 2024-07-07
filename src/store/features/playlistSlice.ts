@@ -1,5 +1,14 @@
+import { fetchFavoritesTracks } from "@/api/tracks";
 import { TrackType } from "@/types";
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+
+export const getFavoritesTracks = createAsyncThunk(
+  "playlist/fetFavoriteTracks",
+  async (access: string) => {
+    const favoriteTracks = await fetchFavoritesTracks(access);
+    return favoriteTracks;
+  }
+);
 
 type playlistStateType = {
   currentTrack: null | TrackType;
@@ -15,6 +24,7 @@ type playlistStateType = {
   };
   filteredTracks: TrackType[];
   initialTracks: TrackType[];
+  likedTracks: TrackType[];
 };
 
 const initialState: playlistStateType = {
@@ -31,6 +41,7 @@ const initialState: playlistStateType = {
   },
   filteredTracks: [],
   initialTracks: [],
+  likedTracks: [],
 };
 
 const playlistSlice = createSlice({
@@ -141,6 +152,22 @@ const playlistSlice = createSlice({
       }
       state.filteredTracks = filteredArr;
     },
+    likeTack: (state, action: PayloadAction<TrackType>) => {
+      state.likedTracks.push(action.payload);
+    },
+    dislikeTrack: (state, action: PayloadAction<TrackType>) => {
+      state.likedTracks = state.likedTracks.filter(
+        (el) => el.id !== action.payload.id
+      );
+    },
+  },
+  extraReducers(builder) {
+    builder.addCase(
+      getFavoritesTracks.fulfilled,
+      (state, action: PayloadAction<TrackType[]>) => {
+        state.likedTracks = action.payload;
+      }
+    );
   },
 });
 
@@ -152,5 +179,7 @@ export const {
   setIsShuffle,
   setIsPlaying,
   setFilters,
+  likeTack,
+  dislikeTrack,
 } = playlistSlice.actions;
 export const playlistReducer = playlistSlice.reducer;

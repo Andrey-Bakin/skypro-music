@@ -1,12 +1,15 @@
-  type UserType = {
+  export type UserType = {
     id: number;
     username: string;
     first_name: string;
     last_name: string;
     email: string;
+    password: string;
+    refresh: string;
   };
 
   export type TrackType = {
+    isFavorite?: boolean;
     id: number;
     name: string;
     author: string;
@@ -20,3 +23,13 @@
     onClick: () => void;
   };
 
+  export type SignupType = {
+    email: string;
+    username: string;
+    userpassword: string;
+  };
+  
+  export type SigninType = {
+    email: string;
+    password: string;
+  };

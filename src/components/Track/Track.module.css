@@ -135,7 +135,9 @@
 }
 
 .trackTime {
+  /* width: 80px; */
   display: flex;
+  justify-content: space-between;
   align-items: center;
 }
 
@@ -145,6 +147,13 @@
   margin-right: 17px;
   fill: transparent;
   stroke: #696969;
+}
+
+.activeLike {
+  fill: #AD61FF;
+  width: 14px;
+  height: 12px;
+  margin-right: 17px;
 }
 
 .trackTimeText {
