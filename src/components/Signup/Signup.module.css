@@ -147,3 +147,31 @@
     -ms-flex-pack: center;
     justify-content: center;
   }
+
+  .emailExample {
+    position: absolute;
+    top: 135px;
+    color: #3f007d;
+  }
+
+  .passwordClueRed {
+    position: absolute;
+    top: 200px;
+    color: red;
+    font-size: 14px;
+    line-height: 24px;
+  }
+  
+  .passwordClueGreen {
+    position: absolute;
+    top: 200px;
+    color: green;
+    font-size: 14px;
+    line-height: 24px;
+  }
+  
+  .notFilled {
+    color: red;
+    position: absolute;
+    top: 400px;
+  }

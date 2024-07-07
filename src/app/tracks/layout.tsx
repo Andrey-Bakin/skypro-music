@@ -5,7 +5,6 @@ import styles from "./layout.module.css";
 import SideBar from "@/components/SideBar/SideBar";
 import Player from "@/components/Player/Player";
 import Search from "@/components/Search/Search";
-import Filter from "@/components/Filter/Filter";
 
 export default function TracksLayout({
     children,
@@ -20,7 +19,6 @@ export default function TracksLayout({
           <div className={styles.mainCenterblock}>
             <Search />
             <div className={styles.centerblockContent}>
-              
               {children}
             </div>
           </div>

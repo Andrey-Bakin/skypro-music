@@ -13,7 +13,6 @@ type CategoryType = {
 };
 
 const CategoryPage = ({ params }: CategoryType) => {
-  // const tracksData = await getPlaylist(params.id);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [tracks, setTracks] = useState<TrackType[]>([]);
   const dispatch = useAppDispatch();

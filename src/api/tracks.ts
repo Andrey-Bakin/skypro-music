@@ -20,3 +20,20 @@ export async function getPlaylist(id: string) {
     const data = await response.json();
     return data.items;
   }
+
+  export async function fetchFavoritesTracks(token: string) {
+    const responce = await fetch(baseUrl + "/track/favorite/all/",
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+  
+    if (!responce.ok) {
+      throw new Error(JSON.stringify(responce.status));
+    }
+    const data = await responce.json();
+    return data;
+  }
