@@ -1,14 +1,5 @@
-import { fetchFavoritesTracks } from "@/api/tracks";
-import { TrackType } from "@/types";
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-export const getFavoritesTracks = createAsyncThunk(
-  "playlist/fetFavoriteTracks",
-  async (access: string) => {
-    const favoriteTracks = await fetchFavoritesTracks(access);
-    return favoriteTracks;
-  }
-);
+import { TrackType } from "@/types/types";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 type playlistStateType = {
   currentTrack: null | TrackType;
@@ -24,7 +15,7 @@ type playlistStateType = {
   };
   filteredTracks: TrackType[];
   initialTracks: TrackType[];
-  likedTracks: TrackType[];
+  likedTracks: number[];
 };
 
 const initialState: playlistStateType = {
@@ -152,22 +143,20 @@ const playlistSlice = createSlice({
       }
       state.filteredTracks = filteredArr;
     },
-    likeTack: (state, action: PayloadAction<TrackType>) => {
-      state.likedTracks.push(action.payload);
+    setLikeTack: (state, action: PayloadAction<number[]>) => {
+      state.likedTracks = action.payload;
     },
-    dislikeTrack: (state, action: PayloadAction<TrackType>) => {
-      state.likedTracks = state.likedTracks.filter(
-        (el) => el.id !== action.payload.id
-      );
-    },
-  },
-  extraReducers(builder) {
-    builder.addCase(
-      getFavoritesTracks.fulfilled,
-      (state, action: PayloadAction<TrackType[]>) => {
-        state.likedTracks = action.payload;
+    setIsLike: (state, action: PayloadAction<{ id: number }>) => {
+      const { id } = action.payload;
+      if (state.likedTracks.includes(id)) {
+        state.likedTracks = state.likedTracks.filter((item) => item !== id);
+      } else {
+        state.likedTracks.push(id)
       }
-    );
+    },
+    clearLikedTracks(state) {
+      state.likedTracks = [];
+    },
   },
 });
 
@@ -179,7 +168,8 @@ export const {
   setIsShuffle,
   setIsPlaying,
   setFilters,
-  likeTack,
-  dislikeTrack,
+  setLikeTack,
+  setIsLike,
+  clearLikedTracks,
 } = playlistSlice.actions;
 export const playlistReducer = playlistSlice.reducer;

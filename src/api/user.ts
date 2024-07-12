@@ -1,11 +1,11 @@
-import { SigninType, SignupType, UserType } from "@/types";
+import { SigninType, SignupType, UserType } from "@/types/types";
 
-const apiUrlUser = "https://skypro-music-api.skyeng.tech/user/";
+const apiUrlUser = "https://skypro-music-api.skyeng.tech/user";
 
-const signup = "signup/";
-const login = "login/";
-const token = "token/";
-const tokenRefresh = "token/refresh/";
+const signup = "/signup/";
+const login = "/login/";
+const token = "/token/";
+const tokenRefresh = "/token/refresh/";
 
 export async function postLoginUser({ email, password }: SigninType) {
   const response = await fetch(apiUrlUser + login, {
@@ -41,9 +41,9 @@ export async function postRegUser({ email, userpassword }: SignupType) {
       "content-type": "application/json",
     },
   });
-  // if (!responce.ok) {
-  //   throw new Error("Ошибка");
-  // }
+  if (!response.ok) {
+    throw new Error("Ошибка");
+  }
   const data = await response.json();
 
   return data;
@@ -67,18 +67,22 @@ export async function postToken({ email, password }: SigninType) {
   return data;
 }
 
-export async function postRefreshToken(refresh : string) {
+export async function postRefreshToken(refreshToken: string) {
   const response = await fetch(apiUrlUser + tokenRefresh, {
     method: "POST",
     body: JSON.stringify({
-      refresh: refresh,
+      refresh: refreshToken,
     }),
     headers: {
       "content-type": "application/json",
     },
   });
-  if (!response.ok) {
-    throw new Error("Ошибка при получении данных");
+  if (response.status === 400) {
+    throw new Error("В теле запроса не передан refresh токен");
+  } else if (response.status === 401) {
+    throw new Error("Refresh токен невалидный");
+  } else if (response.status === 500) {
+    throw new Error("Сервер не отвечает");
   }
   const data = await response.json();
   return data;
