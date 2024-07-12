@@ -21,6 +21,7 @@ const VolumeBar = React.memo(({ min, max, step, value, onChange }: VolumeType) =
         </div>
         <div className={(classNames(styles.volumeProgress), "_btn")}>
           <input
+            data-testid="progress-input"
             className={(classNames(styles.volumeProgressLine), "_btn")}
             type="range"
             name="range"

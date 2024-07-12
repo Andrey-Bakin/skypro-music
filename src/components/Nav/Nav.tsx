@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import styles from "./Nav.module.css";
 import { useState } from "react";
-import { useAppDispatch, useAppSelector } from "@/hooks";
+import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
 import { setAuthState, setUserData } from "@/store/features/authSlice";
 
 export default function Nav() {
@@ -34,7 +34,7 @@ export default function Nav() {
           />
         </Link>
       </div>
-      <div onClick={toggleMenu} className={styles.navBurger}>
+      <div data-testid="burger" onClick={toggleMenu} className={styles.navBurger}>
         <span className={styles.burgerLine} />
         <span className={styles.burgerLine} />
         <span className={styles.burgerLine} />
@@ -53,9 +53,9 @@ export default function Nav() {
               </Link>
             </li>
             <li className={styles.menuItem}>
-                <Link onClick={logout} href="/signin" className={styles.menuLink}>
-                  Выйти
-                </Link>
+              <Link onClick={logout} href="/signin" className={styles.menuLink}>
+                {logged ? "Выйти" : "Войти"}
+              </Link>
             </li>
           </ul>
         </div>
