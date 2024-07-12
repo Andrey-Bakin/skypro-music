@@ -111,7 +111,7 @@ const handleSignup = async (event: React.MouseEvent<HTMLButtonElement>) => {
             />
             {emailActive ? (
               <div className={styles.emailExample}>
-                Пример: ivan_ivanov@mail.ru
+                Пример: ivan@ivanov.ru
               </div>
             ) : (
               ""
