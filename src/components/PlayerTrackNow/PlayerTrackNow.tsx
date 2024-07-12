@@ -1,30 +1,24 @@
 "use client";
 
-import { TrackType } from "@/types";
+import { TrackType } from "@/types/types";
 import styles from "./PlayerTrackNow.module.css";
 import classNames from "classnames";
-import { useEffect, useState } from "react";
-import { useAppDispatch, useAppSelector } from "@/hooks";
-import { setDislike, setLike } from "@/api/likes";
+import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
 import { useRouter } from "next/navigation";
 import { setAuthState, setUserData } from "@/store/features/authSlice";
+import { useLike } from "@/hooks/useLikes";
 
 type PlayerTrackNowType = {
   track: TrackType;
-  isFavorite?: boolean;
 };
 
 export default function PlayerTrackNow({
-  track,
-  isFavorite,
+  track
 }: PlayerTrackNowType) {
   const userData = useAppSelector((state) => state.auth.userData);
-  const { id, stared_user } = track;
-  const isLikedByUser =
-    isFavorite || stared_user.find((u) => u.id === userData?.id);
-  const [isLiked, setIsLiked] = useState(!!isLikedByUser);
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const {isLiked, handleLike} = useLike(track);
 
   const logout = () => {
     dispatch(setAuthState(false));
@@ -32,38 +26,7 @@ export default function PlayerTrackNow({
     localStorage.removeItem("user");
     localStorage.removeItem("token");
   };
-
-  const handleLikeClick = () => {
-    isLiked
-      ? setDislike(userData?.access, id)
-          .then(() => {})
-          .catch((error) => {
-            if (error) {
-              const errorData = JSON.parse(error.message);
-              if (errorData.status === 401) {
-                logout();
-                router.push("/signin");
-              }
-            }
-          })
-      : setLike(userData?.access, id)
-          .then(() => {})
-          .catch((error) => {
-            if (error) {
-              const errorData = JSON.parse(error.message);
-              if (errorData.status === 401) {
-                logout();
-                router.push("/signin");
-              }
-            }
-          });
-    setIsLiked(!isLiked);
-  };
-
-  useEffect(() => {
-    setIsLiked(!!isLikedByUser);
-  }, [track, isFavorite, userData, isLikedByUser]);
-
+  
   return (
     <div className={styles.playerTrackPlay}>
       <div className={styles.trackPlayContain}>
@@ -81,7 +44,7 @@ export default function PlayerTrackNow({
       </div>
       <div className={styles.trackPlayLikeDis}>
         <div
-          onClick={handleLikeClick}
+          onClick={handleLike}
           className={(classNames(styles.trackPlayLike), "_btn-icon")}
         >
           <svg className={styles.trackPlayLikeSvg}>
@@ -92,11 +55,11 @@ export default function PlayerTrackNow({
             />
           </svg>
         </div>
-        {/* <div className={(classNames(styles.trackPlayDislike), "_btn-icon")}>
+        <div onClick={handleLike} className={(classNames(styles.trackPlayDislike), "_btn-icon")}>
           <svg className={styles.trackPlayDislikeSvg}>
             <use xlinkHref="/image/icon/sprite.svg#icon-dislike" />
           </svg>
-        </div> */}
+        </div>
       </div>
     </div>
   );
