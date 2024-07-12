@@ -1,6 +1,6 @@
 "use client";
 
-import { TrackType } from "@/types";
+import { TrackType } from "@/types/types";
 import PlaylistHeader from "../PlaylistHeder/PlaylistHeader";
 import Track from "../Track/Track";
 import styles from "./CenterBlock.module.css";
@@ -25,7 +25,12 @@ export default function CenterBlock({
       {isLoading && (
         <div className={styles.contentPlaylist}>
           {tracks?.map((track) => (
-            <Track key={track.id} track={track} tracksData={playlist} isFavorite={isFavorite} />
+            <Track
+              key={track.id}
+              track={track}
+              tracksData={playlist}
+              isFavorite={isFavorite}
+            />
           ))}
         </div>
       )}

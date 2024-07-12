@@ -3,10 +3,10 @@
 import { getPlaylist } from "@/api/tracks";
 import styles from "../../layout.module.css";
 import CenterBlock from "@/components/CenterBlock/CenterBlock";
-import { useAppDispatch, useAppSelector } from "@/hooks";
+import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
 import { useEffect, useState } from "react";
 import { setInitialTracks } from "@/store/features/playlistSlice";
-import { TrackType } from "@/types";
+import { TrackType } from "@/types/types";
 
 type CategoryType = {
   params: { id: string };
@@ -25,7 +25,7 @@ const CategoryPage = ({ params }: CategoryType) => {
       dispatch(setInitialTracks({ initialTracks: tracksData }));
       setIsLoading(true);
     });
-  }, [dispatch]);
+  }, [dispatch, params.id]);
   let namePlaylist = "";
   switch (params.id) {
     case "1":
@@ -46,7 +46,7 @@ const CategoryPage = ({ params }: CategoryType) => {
       <h2 className={styles.centerblockH2}>{namePlaylist}</h2>
       <CenterBlock
         tracks={filteredTracks}
-        playlist={filteredTracks}
+        playlist={tracks}
         isLoading={isLoading}
       />
     </>

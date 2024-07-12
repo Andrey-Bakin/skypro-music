@@ -2,9 +2,9 @@
 
 import { getTracks } from "@/api/tracks";
 import CenterBlock from "@/components/CenterBlock/CenterBlock";
-import { useAppDispatch, useAppSelector } from "@/hooks";
+import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
 import { setInitialTracks } from "@/store/features/playlistSlice";
-import { TrackType } from "@/types";
+import { TrackType } from "@/types/types";
 import { useEffect, useState } from "react";
 import styles from "./layout.module.css";
 import Filter from "@/components/Filter/Filter";
