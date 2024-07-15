@@ -22,7 +22,7 @@ export async function getPlaylist(id: string) {
   }
 
   export async function fetchFavoritesTracks(token: string) {
-    const responce = await fetch(baseUrl + "/track/favorite/all/",
+    const response = await fetch(baseUrl + "/track/favorite/all/",
       {
         method: "GET",
         headers: {
@@ -31,9 +31,9 @@ export async function getPlaylist(id: string) {
       }
     );
   
-    if (!responce.ok) {
-      throw new Error(JSON.stringify(responce.status));
+    if (!response.ok) {
+      throw new Error(JSON.stringify(response.status));
     }
-    const data = await responce.json();
+    const data = await response.json();
     return data;
   }

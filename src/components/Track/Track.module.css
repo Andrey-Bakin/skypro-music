@@ -135,7 +135,7 @@
 }
 
 .trackTime {
-  /* width: 80px; */
+  width: 100px;
   display: flex;
   justify-content: space-between;
   align-items: center;

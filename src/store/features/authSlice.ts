@@ -25,10 +25,7 @@ function checkLSAuth(key: string) {
 const initialState: AuthStateType = {
   authState: !!checkLSAuth("token"),
   userData: checkLSAuth("user"),
-  token: {
-    access: checkLSAuth("token"),
-    refresh: checkLSAuth("token")
-  } ,
+  token: checkLSAuth("token"),
 };
 
 const authSlice = createSlice({
