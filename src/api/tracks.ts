@@ -7,7 +7,8 @@ export async function getTracks() {
         throw new Error("Ошибка получения данных");
     }
 
-    return response.json();
+    const data = response.json();
+    return data;
 }
 
 export async function getPlaylist(id: string) {
@@ -31,9 +32,11 @@ export async function getPlaylist(id: string) {
       }
     );
   
-    if (!response.ok) {
-      throw new Error(JSON.stringify(response.status));
+    if (response.status === 401) {
+      throw new Error("Нет авторизации");
+    } else if (response.status === 500) {
+      throw new Error("Сервер не отвечает")
     }
-    const data = await response.json();
+    const data = response.json();
     return data;
   }

@@ -5,6 +5,7 @@ import styles from "./Nav.module.css";
 import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
 import { setAuthState, setUserData } from "@/store/features/authSlice";
+import { clearLikedTracks } from "@/store/features/playlistSlice";
 
 export default function Nav() {
   const logged = useAppSelector((state) => state.auth.authState);
@@ -17,6 +18,7 @@ export default function Nav() {
   const logout = () => {
     dispatch(setAuthState(false));
     dispatch(setUserData(null));
+    dispatch(clearLikedTracks());
     localStorage.removeItem("user");
     localStorage.removeItem("token");
   };

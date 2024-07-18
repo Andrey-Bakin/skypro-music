@@ -25,6 +25,7 @@ export default function Search() {
         name="search"
         value={searchValue}
         onChange={handleChange}
+        data-testid="search"
       />
     </div>
   );
