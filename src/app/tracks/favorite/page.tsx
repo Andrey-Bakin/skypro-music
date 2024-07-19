@@ -10,12 +10,13 @@ import styles from "../layout.module.css";
 import { useEffect, useState } from "react";
 
 export default function FavoriteTracksPage() {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const token = useAppSelector((state) => state.auth.token?.access);
   const authState = useAppSelector((state) => state.auth.authState);
   const [tracksData, setTracksData] = useState<TrackType[]>([]);
   const router = useRouter();
   const dispatch = useAppDispatch();
-
+  
   useEffect(() => {
     if (token) 
     fetchFavoritesTracks(token)
@@ -46,6 +47,7 @@ export default function FavoriteTracksPage() {
         tracks={tracksData}
         playlist={tracksData}
         isFavorite={true}
+        isLoading={isLoading}
       />
     </div>
   );
