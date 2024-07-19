@@ -20,6 +20,7 @@ export const useLike = (track: TrackType) => {
       dispatch(setIsLike({ id: track.id }));
     } catch (err) {
       console.log(err);
+      alert("Нужна авторизация")
     }
   };
 

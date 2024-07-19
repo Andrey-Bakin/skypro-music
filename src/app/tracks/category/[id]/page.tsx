@@ -20,10 +20,11 @@ const CategoryPage = ({ params }: CategoryType) => {
     (store) => store.playlist.filteredTracks
   );
   useEffect(() => {
+    setIsLoading(true)
     getPlaylist(params.id).then((tracksData) => {
       setTracks(tracksData);
       dispatch(setInitialTracks({ initialTracks: tracksData }));
-      setIsLoading(true);
+      setIsLoading(false);
     });
   }, [dispatch, params.id]);
   let namePlaylist = "";

@@ -15,7 +15,6 @@ export default function FavoriteTracksPage() {
   const [tracksData, setTracksData] = useState<TrackType[]>([]);
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const favoriteTracks = useAppSelector((state) => state.playlist.likedTracks);
 
   useEffect(() => {
     if (token) 
@@ -33,13 +32,13 @@ export default function FavoriteTracksPage() {
       });
   }, [dispatch, router, token]);
 
-  useEffect(() => {
-    if (!authState) {
-      alert("Вам необходимо авторизоваться!");
-      router.push("/signin");
-    }
-  }, [authState, router]);
- console.log(tracksData)
+//   useEffect(() => {
+//     if (!authState) {
+//       alert("Вам необходимо авторизоваться!");
+//       router.push("/signin");
+//     }
+//   }, [authState, router]);
+//  console.log(tracksData)
   return (
     <div >
       <h2 className={styles.centerblockH2}>Мои треки</h2>
