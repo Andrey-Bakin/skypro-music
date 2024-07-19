@@ -18,11 +18,12 @@ export default function MainTraksPage() {
   );
 
   useEffect(() => {
+    setIsLoading(true)
     getTracks().then((tracksData) => {
       setTracks(tracksData);
       dispatch(setInitialTracks({ initialTracks: tracksData }));
-      setIsLoading(true);
-    });
+      setIsLoading(false);
+    })
   }, [dispatch]);
   return (
     <>

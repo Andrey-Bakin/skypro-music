@@ -22,7 +22,7 @@ export default function CenterBlock({
       {tracks?.length === 0 &&
         isLoading &&
         "Нет треков, удовлетворяющих условиям фильтра"}
-      {isLoading && (
+      {!isLoading && (
         <div className={styles.contentPlaylist}>
           {tracks?.map((track) => (
             <Track

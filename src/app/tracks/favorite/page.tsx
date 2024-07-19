@@ -18,8 +18,10 @@ export default function FavoriteTracksPage() {
   const favoriteTracks = useAppSelector((state) => state.playlist.likedTracks);
 
   useEffect(() => {
-    fetchFavoritesTracks(token as string)
+    if (token) 
+    fetchFavoritesTracks(token)
       .then((data) => {
+        console.log(data)
         setTracksData(data);
       })
       .catch((error) => {
@@ -37,7 +39,7 @@ export default function FavoriteTracksPage() {
       router.push("/signin");
     }
   }, [authState, router]);
-
+ console.log(tracksData)
   return (
     <div >
       <h2 className={styles.centerblockH2}>Мои треки</h2>
