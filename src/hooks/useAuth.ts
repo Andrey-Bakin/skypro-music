@@ -26,16 +26,16 @@ export const useAuth = () => {
 
         dispatch(setAuthState(true));
 
-        try {
-          const newToken = await postRefreshToken(tokenData.refresh);
-          dispatch(refreshTokenAction({ access: newToken.access }));
-          localStorage.setItem("token", JSON.stringify({ ...tokenData, access: newToken.access }));
-        } catch (error) {
-          console.error("Failed to refresh token:", error);
-          dispatch(setAuthState(false));
-          localStorage.removeItem("user");
-          localStorage.removeItem("token");
-        }
+        // try {
+        //   const newToken = await postRefreshToken(tokenData.refresh);
+        //   dispatch(refreshTokenAction({ access: newToken.access }));
+        //   localStorage.setItem("token", JSON.stringify({ ...tokenData, access: newToken.access }));
+        // } catch (error) {
+        //   console.error("Failed to refresh token:", error);
+        //   dispatch(setAuthState(false));
+        //   localStorage.removeItem("user");
+        //   localStorage.removeItem("token");
+        // }
       }
     };
 
