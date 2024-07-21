@@ -137,7 +137,7 @@
 .trackTime {
   width: 100px;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
 }
 
@@ -161,7 +161,7 @@
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
-  text-align: right;
+  text-align: left;
   color: #696969;
   margin-right: 24px;
 }
