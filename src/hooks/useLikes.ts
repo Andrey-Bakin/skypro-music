@@ -1,26 +1,42 @@
 import { TrackType } from "@/types/types";
-import { useAppDispatch, useAppSelector } from "./hooks";
 import { setDislike, setLike } from "@/api/likes";
-import { setIsLike } from "@/store/features/playlistSlice";
+import { dislikeTrack, likeTrack } from "@/store/features/playlistSlice";
+import { AppDispatch, AppStore, RootState } from "@/store/store";
+import {
+  TypedUseSelectorHook,
+  useDispatch,
+  useSelector,
+  useStore,
+} from "react-redux";
+
+export const useAppDispatch: () => AppDispatch = useDispatch;
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
+export const useAppStore: () => AppStore = useStore;
 
 export const useLike = (track: TrackType) => {
-  const token = useAppSelector((state) => state.auth.token?.access);
+  const tokens = useAppSelector((state) => state.auth.tokens);
   const likedTracks = useAppSelector((state) => state.playlist.likedTracks);
   const dispatch = useAppDispatch();
-  const isLiked = likedTracks.includes(track.id);
-  const handleLike = async (event: React.MouseEvent<HTMLDivElement>) => {
+  const isLiked = likedTracks.some((likedTrack) => likedTrack.id === track.id);
+  const handleLike = async (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
     event.stopPropagation();
-    if (!token) {
-      alert("Авторизируйтесь чтобы поставить лайк!");
-      return;
-    }
     const action = isLiked ? setDislike : setLike;
     try {
-      await action(token, track.id);
-      dispatch(setIsLike({ id: track.id }));
-    } catch (err) {
-      console.log(err);
-      alert("Нужна авторизация")
+      await action({
+        id: String(track.id),
+        access: tokens?.access,
+      });
+      if (isLiked) {
+        dispatch(dislikeTrack(track));
+        console.log(likedTracks);
+      } else {
+        dispatch(likeTrack(track));
+        console.log(likedTracks);
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 

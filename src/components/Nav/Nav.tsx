@@ -4,24 +4,15 @@ import Link from "next/link";
 import styles from "./Nav.module.css";
 import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
-import { setAuthState, setUserData } from "@/store/features/authSlice";
-import { clearLikedTracks } from "@/store/features/playlistSlice";
+import { logout } from "@/store/features/authSlice";
 
 export default function Nav() {
-  const logged = useAppSelector((state) => state.auth.authState);
+  const userName = useAppSelector((state) => state.auth.user?.username);
   const dispatch = useAppDispatch();
   const [isOpenedMenu, setIsOpenedMenu] = useState<boolean>(false);
   function toggleMenu() {
     setIsOpenedMenu((prev) => !prev);
   }
-
-  const logout = () => {
-    dispatch(setAuthState(false));
-    dispatch(setUserData(null));
-    dispatch(clearLikedTracks());
-    localStorage.removeItem("user");
-    localStorage.removeItem("token");
-  };
 
   return (
     <nav className={styles.mainNav}>
@@ -36,7 +27,11 @@ export default function Nav() {
           />
         </Link>
       </div>
-      <div data-testid="burger" onClick={toggleMenu} className={styles.navBurger}>
+      <div
+        data-testid="burger"
+        onClick={toggleMenu}
+        className={styles.navBurger}
+      >
         <span className={styles.burgerLine} />
         <span className={styles.burgerLine} />
         <span className={styles.burgerLine} />
@@ -49,15 +44,30 @@ export default function Nav() {
                 Главное
               </Link>
             </li>
+            {userName && (
+              <li className={styles.menuItem}>
+                <Link href="/tracks/favorite" className={styles.menuLink}>
+                  Мой плейлист
+                </Link>
+              </li>
+            )}
             <li className={styles.menuItem}>
-              <Link href="/tracks/favorite" className={styles.menuLink}>
-                Мой плейлист
-              </Link>
-            </li>
-            <li className={styles.menuItem}>
-              <Link onClick={logout} href="/signin" className={styles.menuLink}>
-                {logged ? "Выйти" : "Войти"}
-              </Link>
+              {userName ? (
+                <div
+                  onClick={() => {
+                    dispatch(logout());
+                    localStorage.removeItem("user");
+                    localStorage.removeItem("token");
+                  }}
+                  className={styles.menuLink}
+                >
+                  Выйти
+                </div>
+              ) : (
+                <Link href="/signin" className={styles.menuLink}>
+                  Войти
+                </Link>
+              )}
             </li>
           </ul>
         </div>

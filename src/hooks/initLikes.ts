@@ -1,22 +1,16 @@
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "./hooks";
-import { setLikeTack } from "../store/features/playlistSlice";
-import { TrackType } from "../types/types";
-import { fetchFavoritesTracks } from "../api/tracks";
+import { clearLikedTracks, getFavoriteTracks } from "../store/features/playlistSlice";
 
 export function useInitialLikedTracks() {
   const dispatch = useAppDispatch();
-  const token = useAppSelector((state) => state.auth.token?.access);
+  const tokens = useAppSelector((state) => state.auth.tokens);
 
   useEffect(() => {
-    if (token) {
-      fetchFavoritesTracks(token)
-        .then((data) => {
-          dispatch(setLikeTack(data.map((track: TrackType) => track.id)));
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+    if (tokens?.access) {
+      dispatch(getFavoriteTracks(tokens.access))  
+    } else {
+      dispatch(clearLikedTracks())
     }
-  }, [token, dispatch]);
+  }, [tokens, dispatch]);
 }

@@ -1,75 +1,87 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { postLoginUser, postRefreshToken, postRegUser, postToken } from "@/api/user";
+import { SigninType, SignupType, TokensType, UserType } from "@/types/types";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-type AuthStateType = {
-  authState: boolean;
-  userData: {
-    id: number;
-    email: string;
-    username: string;
-  } | null;
-  token: {
-    access: string;
-    refresh: string;
-  } | null;
-};
+export const getUser = createAsyncThunk(
+  "user/getUser",
+  async({ email, password }: SigninType) => {
+    const user = await postLoginUser({ email, password })
+    return user
+  }
+)
 
-function checkLSAuth(key: string) {
+export const getTokens = createAsyncThunk(
+  "user/getTokens",
+  async ({ email, password }: SigninType) => {
+    const tokens = await postToken({ email, password })
+    return tokens
+  }
+)
+
+export const getSignup = createAsyncThunk(
+  "user/getSignup",
+  async ({ email, username, userpassword }: SignupType) => {
+    const user = await postRegUser({ email, username, userpassword })
+    return user
+  }
+)
+
+export const getNewAccessToken = createAsyncThunk(
+  "user/getNewAccessToken",
+  async (refresh: string) => {
+    const token = await postRefreshToken(refresh)
+    return token
+  }
+)
+
+function getValueFronLS (key: string) {
   try {
-    const data = JSON.parse(localStorage.getItem(key) || "null");
-    return data || null;
+    const value = localStorage.getItem(key)
+    return value ? JSON.parse(value) : null
   } catch (error) {
-    return null;
+    null
   }
 }
 
+type AuthStateType = {
+  user: null | UserType,
+  tokens: {
+    access: string | null,
+    refresh: string | null
+  }
+};
+
 const initialState: AuthStateType = {
-  authState: !!checkLSAuth("token"),
-  userData: checkLSAuth("user"),
-  token: checkLSAuth("token"),
+  user: getValueFronLS("user"),
+  tokens: {
+    access: getValueFronLS("access"),
+    refresh: getValueFronLS("refresh")
+  }
 };
 
 const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    setAuthState: (state, action: PayloadAction<boolean>) => {
-      state.authState = action.payload;
-    },
-    setUserData: (
-      state,
-      action: PayloadAction<{
-        email?: string;
-        username?: string;
-        id?: number;
-        access?: string;
-        refresh?: string;
-      } | null>
-    ) => {
-      if (action.payload) {
-        state.userData = {
-          id: action.payload.id || state.userData?.id || 0,
-          email: action.payload.email || state.userData?.email || "",
-          username: action.payload.username || state.userData?.username || "",
-          
-        };
-        state.token = {
-          access: action.payload.access || state.token?.access || "",
-          refresh: action.payload.refresh || state.token?.refresh || "",
-        };
-        state.authState = true;
-      } else {
-        state.userData = null;
-        state.token = null;
-        state.authState = false;
-      }
-    },
-    refreshToken: (state, action: PayloadAction<{ access: string }>) => {
-      if (state.token) {
-        state.token.access = action.payload.access;
-      }
+    logout: (state) => {
+      state.user = null;
+      state.tokens.access = null;
+      state.tokens.refresh = null;
     },
   },
+  extraReducers(builder) {
+    builder.addCase(getUser.fulfilled, (state, action: PayloadAction<UserType>) =>{
+      state.user = action.payload
+    }).addCase(getTokens.fulfilled, (state, action: PayloadAction<TokensType>) =>{
+      state.tokens.access = action.payload.access;
+      state.tokens.refresh = action.payload.refresh;
+    }).addCase(getSignup.fulfilled, (state, action: PayloadAction<UserType>) =>{
+      state.user = action.payload;
+    }).addCase(getNewAccessToken.fulfilled, (state, action: PayloadAction<string>) =>{
+      state.tokens.access = action.payload;
+    })
+  }
 });
 
-export const { setAuthState, setUserData, refreshToken } = authSlice.actions;
+export const { logout } = authSlice.actions;
 export const authReducer = authSlice.reducer;

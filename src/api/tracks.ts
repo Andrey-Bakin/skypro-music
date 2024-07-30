@@ -22,12 +22,12 @@ export async function getPlaylist(id: string) {
     return data.items;
   }
 
-  export async function fetchFavoritesTracks(token: string) {
+  export async function fetchFavoritesTracks(access: string) {
     const response = await fetch(baseUrl + "/track/favorite/all/",
       {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${access}`,
         },
       }
     );

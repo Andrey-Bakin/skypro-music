@@ -27,6 +27,7 @@ const CategoryPage = ({ params }: CategoryType) => {
       setIsLoading(false);
     });
   }, [dispatch, params.id]);
+  
   let namePlaylist = "";
   switch (params.id) {
     case "1":

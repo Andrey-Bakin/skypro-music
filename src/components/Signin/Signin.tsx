@@ -7,59 +7,41 @@ import classNames from "classnames";
 import { useAppDispatch } from "@/hooks/hooks";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { postLoginUser, postToken } from "@/api/user";
-import { setAuthState, setUserData } from "@/store/features/authSlice";
-
-type SinginTipe = {
-  email: string;
-  password: string;
-};
+import { getTokens, getUser } from "@/store/features/authSlice";
 
 export default function Signin() {
+  const router = useRouter();
   const dispatch = useAppDispatch();
-  const [loginData, setLoginData] = useState<SinginTipe>({
+  const [loginData, setLoginData] = useState({
     email: "",
     password: "",
   });
-
-  const router = useRouter();
-
+  
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-
-    setLoginData({
-      ...loginData,
-      [name]: value,
+    
+    setLoginData((prevFormData) =>{
+      return {
+        ...prevFormData, [name]: value
+      }
     });
   };
 
-  const handleSignin = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSignin = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     try {
-      const userData = await postLoginUser(loginData);
-      dispatch(setAuthState(true));
-      dispatch(
-        setUserData({
-          username: userData.username,
-          email: userData.email,
-          id: userData.id,
+      await Promise.all([
+        dispatch(getTokens(loginData)).unwrap().then((data) => {
+          localStorage.setItem("access", JSON.stringify(data.access));
+          localStorage.setItem("refresh", JSON.stringify(data.refresh))
+        }),
+        dispatch(getUser(loginData)).unwrap().then((data) => {
+          localStorage.setItem("user", JSON.stringify(data))
         })
-      );
-
-      localStorage.setItem("user", JSON.stringify(userData));
-
-      const tokenData = await postToken(loginData);
-      localStorage.setItem(
-        "token",
-        JSON.stringify({ access: tokenData.access, refresh: tokenData.refresh })
-      );
-      dispatch(
-        setUserData({ refresh: tokenData.refresh, access: tokenData.access })
-      );
-
-      router.push("/");
+      ])
+      router.push("/")      
     } catch (error) {
-      alert(error);
+      console.log(error)
     }
   };
 
@@ -67,7 +49,7 @@ export default function Signin() {
     <div className={styles.wrapper}>
       <div className={styles.containerEnter}>
         <div className={styles.modalBlock}>
-          <form className={styles.modalFormLogin} onSubmit={handleSignin} action="#">
+          <form className={styles.modalFormLogin} action="#">
             <Link href="/">
               <div className={styles.modalLogo}>
                 <Image
@@ -84,6 +66,7 @@ export default function Signin() {
               type="email"
               name="email"
               placeholder="Почта"
+              value={loginData.email}
             />
             <input
               onChange={handleInputChange}
@@ -91,9 +74,10 @@ export default function Signin() {
               type="password"
               name="password"
               placeholder="Пароль"
+              value={loginData.password}
             />
-            <button className={styles.modalBtnEnter}>
-              <a>Войти</a>
+            <button className={styles.modalBtnEnter} onClick={handleSignin}>
+              Войти
             </button>
             <button className={styles.modalBtnSignup}>
               <Link href="/signup">Зарегистрироваться</Link>
