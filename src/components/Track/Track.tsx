@@ -6,7 +6,6 @@ import { durationFormat } from "@/utils/durationFormat";
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
 import { setCurrentTrack, setIsPlaying } from "@/store/features/playlistSlice";
 import classNames from "classnames";
-import { setAuthState, setUserData } from "@/store/features/authSlice";
 import { useLike } from "@/hooks/useLikes";
 
 type PlaylistType = {
@@ -22,14 +21,7 @@ export default function Track({ track, tracksData, isFavorite }: PlaylistType) {
   const {isLiked, handleLike} = useLike(track);
   const isCurrentTrack = currentTrack ? currentTrack.id === id : false;
   const dispatch = useAppDispatch();
-
-  const logout = () => {
-    dispatch(setAuthState(false));
-    dispatch(setUserData(null));
-    localStorage.removeItem("user");
-    localStorage.removeItem("token");
-  };
-
+  
   const HandleTrackClick = () => {
     dispatch(setCurrentTrack({ track: { ...track, isFavorite }, tracksData }));
     dispatch(setIsPlaying(true));

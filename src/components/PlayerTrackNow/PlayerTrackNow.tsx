@@ -5,7 +5,6 @@ import styles from "./PlayerTrackNow.module.css";
 import classNames from "classnames";
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
 import { useRouter } from "next/navigation";
-import { setAuthState, setUserData } from "@/store/features/authSlice";
 import { useLike } from "@/hooks/useLikes";
 
 type PlayerTrackNowType = {
@@ -15,18 +14,10 @@ type PlayerTrackNowType = {
 export default function PlayerTrackNow({
   track
 }: PlayerTrackNowType) {
-  const userData = useAppSelector((state) => state.auth.userData);
   const router = useRouter();
   const dispatch = useAppDispatch();
   const {isLiked, handleLike} = useLike(track);
-
-  const logout = () => {
-    dispatch(setAuthState(false));
-    dispatch(setUserData(null));
-    localStorage.removeItem("user");
-    localStorage.removeItem("token");
-  };
-  
+      
   return (
     <div className={styles.playerTrackPlay}>
       <div className={styles.trackPlayContain}>
