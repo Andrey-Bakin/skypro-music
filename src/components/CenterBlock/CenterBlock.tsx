@@ -10,11 +10,13 @@ export default function CenterBlock({
   playlist,
   isFavorite,
   isLoading,
+  filteredTracks,
 }: {
   tracks: TrackType[];
   playlist: TrackType[];
   isFavorite?: boolean;
   isLoading?: boolean;
+  filteredTracks?: TrackType[]
 }) {
   return (
     <div className={styles.mainCenterblock}>
