@@ -1,9 +1,9 @@
 "use client";
 import classNames from "classnames";
 import styles from "./FilterItem.module.css";
-import { useAppDispatch, useAppSelector } from "@/hooks";
+import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
 import { setFilters } from "@/store/features/playlistSlice";
-import { TrackType } from "@/types";
+import { TrackType } from "@/types/types";
 import { useEffect, useState } from "react";
 import { order } from "../data";
 
@@ -23,8 +23,12 @@ export default function FilterItem({
   value,
 }: FilterItemType) {
   const dispatch = useAppDispatch();
+
+  const tracksData = useAppSelector((state) => state.playlist.initialTracks);
+
   const [filterNumber, SetFilterNumber] = useState<number>(0);
-  const tracks = useAppSelector((state) => state.playlist.initialTracks)
+
+  const tracks = useAppSelector((state) => state.playlist.initialTracks);
 
   const orderList = useAppSelector(
     (state) => state.playlist.filterOptions.order
@@ -33,7 +37,7 @@ export default function FilterItem({
   const getFilterList = () => {
     if (value !== "order") {
       const array = new Set(
-        tracks?.map((track: TrackType) => track[value]) || []
+        tracksData?.map((track: TrackType) => track[value]) || []
       );
       return Array.from(array);
     }

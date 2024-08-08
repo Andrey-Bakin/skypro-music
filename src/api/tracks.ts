@@ -7,7 +7,8 @@ export async function getTracks() {
         throw new Error("Ошибка получения данных");
     }
 
-    return response.json();
+    const data = response.json();
+    return data;
 }
 
 export async function getPlaylist(id: string) {
@@ -19,4 +20,23 @@ export async function getPlaylist(id: string) {
   
     const data = await response.json();
     return data.items;
+  }
+
+  export async function fetchFavoritesTracks(access: string) {
+    const response = await fetch(baseUrl + "/track/favorite/all/",
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${access}`,
+        },
+      }
+    );
+  
+    if (response.status === 401) {
+      throw new Error("Нет авторизации");
+    } else if (response.status === 500) {
+      throw new Error("Сервер не отвечает")
+    }
+    const data = response.json();
+    return data;
   }

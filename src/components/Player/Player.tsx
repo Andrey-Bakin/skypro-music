@@ -7,7 +7,7 @@ import VolumeBar from "../VolumeBar/VolumeBar";
 import styles from "./Player.module.css";
 import ProgressBar from "../ProgressBar/ProgressBar";
 import { durationFormat } from "@/utils/durationFormat";
-import { useAppDispatch, useAppSelector } from "@/hooks";
+import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
 import { setIsPlaying, setNextTrack } from "@/store/features/playlistSlice";
 
 export default function Player() {

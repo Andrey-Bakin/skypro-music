@@ -1,30 +1,33 @@
 "use client";
 
-import { TrackType } from "@/types";
+import { TrackType } from "@/types/types";
 import styles from "./Track.module.css";
 import { durationFormat } from "@/utils/durationFormat";
-import { useAppDispatch, useAppSelector } from "@/hooks";
+import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
 import { setCurrentTrack, setIsPlaying } from "@/store/features/playlistSlice";
 import classNames from "classnames";
+import { useLike } from "@/hooks/useLikes";
 
 type PlaylistType = {
   track: TrackType;
   tracksData: TrackType[];
+  isFavorite?: boolean;
 };
 
-export default function Track({ track, tracksData }: PlaylistType) {
+export default function Track({ track, tracksData, isFavorite }: PlaylistType) {
   const currentTrack = useAppSelector((state) => state.playlist.currentTrack);
   const isPlaying = useAppSelector((state) => state.playlist.isPlaying);
   const { name, author, album, duration_in_seconds, id } = track;
+  const {isLiked, handleLike} = useLike(track);
   const isCurrentTrack = currentTrack ? currentTrack.id === id : false;
   const dispatch = useAppDispatch();
-
+  
   const HandleTrackClick = () => {
-    dispatch(setCurrentTrack({ track, tracksData }));
+    dispatch(setCurrentTrack({ track: { ...track, isFavorite }, tracksData }));
     dispatch(setIsPlaying(true));
   };
 
-  return (
+    return (
     <div onClick={HandleTrackClick} className={styles.playlistItem}>
       <div className={styles.playlistTrack}>
         <div className={styles.trackTitle}>
@@ -53,9 +56,13 @@ export default function Track({ track, tracksData }: PlaylistType) {
         <div className={styles.trackAlbum}>
           <span className={styles.trackAlbumLink}>{album}</span>
         </div>
-        <div className={styles.trackTime}>
+        <div onClick={handleLike} className={styles.trackTime}>
           <svg className={styles.trackTimeSvg}>
-            <use xlinkHref="/image/icon/sprite.svg#icon-like" />
+            <use
+              xlinkHref={`/image/icon/sprite.svg#${
+                isLiked ? "icon-like-active" : "icon-like"
+              }`}
+            />
           </svg>
           <span className={styles.trackTimeText}>
             {durationFormat(duration_in_seconds)}

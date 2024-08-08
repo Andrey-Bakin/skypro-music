@@ -1,12 +1,23 @@
-import { TrackType } from "@/types";
+"use client";
+
+import { TrackType } from "@/types/types";
 import styles from "./PlayerTrackNow.module.css";
 import classNames from "classnames";
+import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
+import { useRouter } from "next/navigation";
+import { useLike } from "@/hooks/useLikes";
 
 type PlayerTrackNowType = {
   track: TrackType;
 };
 
-export default function PlayerTrackNow({ track }: PlayerTrackNowType ) {
+export default function PlayerTrackNow({
+  track
+}: PlayerTrackNowType) {
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+  const {isLiked, handleLike} = useLike(track);
+      
   return (
     <div className={styles.playerTrackPlay}>
       <div className={styles.trackPlayContain}>
@@ -16,23 +27,26 @@ export default function PlayerTrackNow({ track }: PlayerTrackNowType ) {
           </svg>
         </div>
         <div className={styles.trackPlayAuthor}>
-          <span className={styles.trackPlayAuthorLink} >
-            {track?.name}
-          </span>
+          <span className={styles.trackPlayAuthorLink}>{track?.name}</span>
         </div>
         <div className={styles.trackPlayAlbum}>
-          <span className={styles.trackPlayAlbumLink} >
-            {track?.author}
-          </span>
+          <span className={styles.trackPlayAlbumLink}>{track?.author}</span>
         </div>
       </div>
       <div className={styles.trackPlayLikeDis}>
-        <div className={(classNames(styles.trackPlayLike), "_btn-icon")}>
+        <div
+          onClick={handleLike}
+          className={(classNames(styles.trackPlayLike), "_btn-icon")}
+        >
           <svg className={styles.trackPlayLikeSvg}>
-            <use xlinkHref="/image/icon/sprite.svg#icon-like" />
+            <use
+              xlinkHref={`/image/icon/sprite.svg#${
+                isLiked ? "icon-like-active" : "icon-like"
+              }`}
+            />
           </svg>
         </div>
-        <div className={(classNames(styles.trackPlayDislike), "_btn-icon")}>
+        <div onClick={handleLike} className={(classNames(styles.trackPlayDislike), "_btn-icon")}>
           <svg className={styles.trackPlayDislikeSvg}>
             <use xlinkHref="/image/icon/sprite.svg#icon-dislike" />
           </svg>

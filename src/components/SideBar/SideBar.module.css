@@ -6,7 +6,7 @@
     justify-content: flex-end;
   }
 
-.sidebarPersonal {
+/* .sidebarPersonal {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -38,7 +38,7 @@
     background-color: #313131;
     border-radius: 50%;
     cursor: pointer;
-  }
+  } */
 
   .sidebarBlock {
     height: 100%;

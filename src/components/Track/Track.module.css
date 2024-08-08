@@ -135,7 +135,9 @@
 }
 
 .trackTime {
+  width: 100px;
   display: flex;
+  justify-content: flex-start;
   align-items: center;
 }
 
@@ -147,12 +149,19 @@
   stroke: #696969;
 }
 
+.activeLike {
+  fill: #AD61FF;
+  width: 14px;
+  height: 12px;
+  margin-right: 17px;
+}
+
 .trackTimeText {
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
-  text-align: right;
+  text-align: left;
   color: #696969;
   margin-right: 24px;
 }
