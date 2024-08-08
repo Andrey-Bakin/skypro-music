@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import Image from "next/image";
 import styles from "./Signup.module.css";
@@ -6,87 +6,94 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { postRegUser } from "@/api/user";
-import classNames from "classnames";
 
-type SignupType = {
-  email: string;
-  username: string;
-  userpassword: string;
-  passwordrepeat: string;
-};
-
-export default function Signup() {
+const Signup = () => {
   const router = useRouter();
-  const [emailActive, setEmailActive] = useState<boolean>(false);
-  const [passwordActive, setPasswordActive] = useState<boolean>(false);
-  const [passwordCorrect, setPasswordCorrect] = useState<boolean>(false);
-  const [isNotFilled, setIsNotFilled] = useState<boolean>(true);
-  const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
-  const [loginData, setLoginData] = useState<SignupType>({
+
+  const [formData, setFormData] = useState({
     email: "",
+    password: "",
     username: "",
-    userpassword: "",
-    passwordrepeat: "",
+    repeatPassword: "",
   });
+  const [error, setError] = useState<string | null>(null);
 
-const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  const { name, value } = event.target;
-  setIsSubmitted(false);
-  setIsNotFilled(false);
-  
-  if (name === "email") {
-    setEmailActive(true);
-    if (value === "") {
-      setEmailActive(false);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prevFormData) => {
+      return {
+        ...prevFormData,
+        [name]: value,
+      };
+    });
+  };
+  const validateForm = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    if (
+      !formData.email &&
+      !formData.password &&
+      !formData.username &&
+      !formData.repeatPassword
+    ) {
+      setError("Введите имя, логин и пароль");
+      return false;
+    } else if (!formData.username) {
+      setError("Введите имя");
+      return false;
+    } else if (!formData.email) {
+      setError("Введите почту");
+      return false;
+    } else if (!formData.password) {
+      setError("Введите пароль");
+      return false;
+    } else if (formData.password !== formData.repeatPassword) {
+      setError("Пароли не совпадают");
+      return false;
+    }
+    return true;
+  };
+  async function handleSubmit(e: React.MouseEvent<HTMLButtonElement>) {
+    e.preventDefault();
+    if (!validateForm(e)) return;
+    try {
+      await postRegUser(formData);
+      router.push("/signin");
+    } catch (error: any) {
+      if (error.status === 400) {
+        const errorData = error.data;
+
+        if (errorData.username) {
+          setError(errorData.username[0]);
+        } else if (errorData.email) {
+          setError(errorData.email[0]);
+        } else if (errorData.password) {
+          const passwordErrors = errorData.password;
+
+          if (
+            passwordErrors.includes(
+              "Введённый пароль слишком короткий. Он должен содержать как минимум 8 символов."
+            )
+          ) {
+            setError(
+              "Введённый пароль слишком короткий. Он должен содержать как минимум 8 символов."
+            );
+          } else if (
+            passwordErrors.includes(
+              "Введённый пароль слишком широко распространён."
+            )
+          ) {
+            setError("Введённый пароль слишком широко распространён.");
+          } else if (
+            passwordErrors.includes("Введённый пароль состоит только из цифр.")
+          ) {
+            setError("Введённый пароль состоит только из цифр.");
+          }
+        }
+      } else {
+        setError("Не удалось зарегистрироваться. Попробуйте еще раз.");
+      }
     }
   }
-
-  if (name === "userpassword") {
-    if (value.length > 7 && /[a-zA-z]/.test(value) && /[0-9]/.test(value)) {
-      setPasswordCorrect(true);
-    } else {
-      setPasswordCorrect(false);
-    }
-    setPasswordActive(true);
-    if (value === "") {
-      setPasswordActive(false);
-    }
-  } 
-
-  setLoginData({
-    ...loginData,
-    [name]: value,
-  });
-};
-
-const handleSignup = async (event: React.MouseEvent<HTMLButtonElement>) => {
-  event.preventDefault();
-  setIsSubmitted(true);
-  if (
-    loginData.email === "" ||
-    (loginData.userpassword === "" && loginData.userpassword.length < 8) ||
-    loginData.passwordrepeat === ""
-  ) {
-    setIsNotFilled(true);
-    return;
-  }
-  if (
-    loginData.email !== "" &&
-    loginData.userpassword === loginData.passwordrepeat
-  ) {
-    setIsNotFilled(false);
-  }
-  if (!isNotFilled) {
-    await postRegUser(loginData)
-      .then(() => {
-        router.push("/signin");
-      })
-      .catch((error) => {
-        alert(error);
-      });
-  }
-};
-
   return (
     <div className={styles.wrapper}>
       <div className={styles.containerSignup}>
@@ -97,62 +104,54 @@ const handleSignup = async (event: React.MouseEvent<HTMLButtonElement>) => {
                 <Image
                   src="/image/logo_modal.png"
                   alt="logo"
-                  width={140}
-                  height={21}
+                  width={256}
+                  height={75}
+                  priority
                 />
               </div>
             </Link>
             <input
-              onChange={handleInputChange}
               className={styles.modalInput}
-              type="email"
+              type="text"
+              name="username"
+              placeholder="Имя"
+              onChange={handleChange}
+              autoComplete="username"
+            />
+            <input
+              className={styles.modalInput}
+              type="text"
               name="email"
               placeholder="Почта"
+              onChange={handleChange}
+              autoComplete="email"
             />
-            {emailActive ? (
-              <div className={styles.emailExample}>
-                Пример: ivan@ivanov.ru
-              </div>
-            ) : (
-              ""
-            )}
             <input
-              onChange={handleInputChange}
-              className={styles.modalInput}
-              type="password"
-              name="userpassword"
-              placeholder="Пароль"
-            />
-            {passwordActive ? (
-              <div
-              className={classNames(
-                { [styles.passwordClueRed]: !passwordCorrect },
-                { [styles.passwordClueGreen]: passwordCorrect }
-              )}
-            >
-              Минимум 8 символов из букв латиницей и цифр
-            </div>
-          ) : (
-            ""
-          )}
-            <input
-              onChange={handleInputChange}
               className={styles.modalInput}
               type="password"
               name="password"
-              placeholder="Повторите пароль"
+              placeholder="Пароль"
+              onChange={handleChange}
+              autoComplete="password"
             />
-            <button onClick={handleSignup} className={styles.modalBtnSignupEnt}>
+            <input
+              className={styles.modalInput}
+              type="password"
+              name="repeatPassword"
+              placeholder="Повторите пароль"
+              onChange={handleChange}
+              autoComplete="newPassword"
+            />
+            {error && <p className={styles.error}>{error}</p>}
+
+            <button onClick={handleSubmit} className={styles.modalBtnSignupEnt}>
               <a>Зарегистрироваться</a>
             </button>
-            {isNotFilled && isSubmitted ? (
-              <div className={styles.notFilled}>Нужно заполнить все поля корректно</div>
-            ) : (
-              ""
-            )}
           </form>
         </div>
       </div>
     </div>
   );
-}
+};
+
+export default Signup;

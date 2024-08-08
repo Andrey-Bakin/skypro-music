@@ -25,7 +25,7 @@ export type TrackType = {
 export type SignupType = {
   email: string;
   username: string;
-  userpassword: string;
+  password: string;
 };
 
 export type SigninType = {

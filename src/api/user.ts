@@ -29,24 +29,26 @@ export async function postLoginUser({ email, password }: SigninType) {
   return data;
 }
 
-export async function postRegUser({ email, userpassword }: SignupType) {
+export async function postRegUser({ email, password, username }: SignupType) {
   const response = await fetch(apiUrlUser + signup, {
     method: "POST",
     body: JSON.stringify({
-      email: email,
-      password: userpassword,
-      username: email,
+      email,
+      password,
+      username,
     }),
     headers: {
       "content-type": "application/json",
     },
-  });
-  if (!response.ok) {
-    throw new Error("Ошибка");
-  }
-  const data = await response.json();
+  })
+  if (response.status === 400) {
+    throw new Error("не удалось зарегистрировать пользователя")
 
-  return data;
+  } else if (response.status === 500) {
+    throw new Error("Сервер сломался")
+  }
+  const responseData = await response.json()
+  return responseData
 }
 
 export async function postToken({ email, password }: SigninType) {

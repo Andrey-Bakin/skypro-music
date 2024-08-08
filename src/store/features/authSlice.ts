@@ -20,8 +20,8 @@ export const getTokens = createAsyncThunk(
 
 export const getSignup = createAsyncThunk(
   "user/getSignup",
-  async ({ email, username, userpassword }: SignupType) => {
-    const user = await postRegUser({ email, username, userpassword })
+  async ({ email, username, password }: SignupType) => {
+    const user = await postRegUser({ email, username, password })
     return user
   }
 )
