@@ -4,11 +4,11 @@ export type UserType = {
   first_name: string;
   last_name: string;
   email: string;
-  password: string;
+  // password: string;
 };
 
 export type TrackType = {
-  isFavorite?: boolean;
+  // isFavorite?: boolean;
   id: number;
   name: string;
   author: string;
@@ -36,4 +36,12 @@ export type SigninType = {
 export type TokensType = {
   access: string | null;
   refresh: string | null;
+};
+
+export type AuthStateType = {
+  user: null | UserType,
+  tokens: {
+    access: string | null,
+    refresh: string | null
+  }
 };

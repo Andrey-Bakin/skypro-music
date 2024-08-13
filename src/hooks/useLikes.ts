@@ -1,42 +1,58 @@
 import { TrackType } from "@/types/types";
 import { setDislike, setLike } from "@/api/likes";
-import { dislikeTrack, likeTrack } from "@/store/features/playlistSlice";
-import { AppDispatch, AppStore, RootState } from "@/store/store";
-import {
-  TypedUseSelectorHook,
-  useDispatch,
-  useSelector,
-  useStore,
-} from "react-redux";
+import { dislikeTrack, likeTrack, setDislikeTrack } from "@/store/features/playlistSlice";
+import { postRefreshToken } from "@/api/user";
+import { getNewAccessToken } from "@/store/features/authSlice";
+import { useAppDispatch, useAppSelector } from "./hooks";
 
-export const useAppDispatch: () => AppDispatch = useDispatch;
-export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
-export const useAppStore: () => AppStore = useStore;
-
-export const useLike = (track: TrackType) => {
-  const tokens = useAppSelector((state) => state.auth.tokens);
+export const useLike = (track: TrackType | null) => {
   const likedTracks = useAppSelector((state) => state.playlist.likedTracks);
+
   const dispatch = useAppDispatch();
-  const isLiked = likedTracks.some((likedTrack) => likedTrack.id === track.id);
+
+  const tokens = useAppSelector((state) => state.auth.tokens.access);
+
+  const isLiked = likedTracks.some((tracks) => track?.id === tracks.id);
+
+  const refresh = useAppSelector((state) => state.auth.tokens.refresh);
+
   const handleLike = async (
-    event: React.MouseEvent<HTMLDivElement, MouseEvent>
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
-    event.stopPropagation();
-    const action = isLiked ? setDislike : setLike;
+    e.stopPropagation();
+    if (!tokens) alert("чтобы поставить лайк, авторизуйтесь");
     try {
-      await action({
-        id: String(track.id),
-        access: tokens?.access,
-      });
       if (isLiked) {
-        dispatch(dislikeTrack(track));
-        console.log(likedTracks);
+        if (tokens && track) {
+          await setDislike(tokens, track.id);
+
+          dispatch(setDislikeTrack(track.id));
+        }
       } else {
-        dispatch(likeTrack(track));
-        console.log(likedTracks);
+        if (tokens && track) {
+          await setLike(tokens, track.id);
+          dispatch(likeTrack(track));
+        }
       }
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      const er = JSON.parse(error.message);
+      if (er.status === 401) {
+        const newTokens = await postRefreshToken(refresh);
+        dispatch(getNewAccessToken(newTokens));
+        if (isLiked) {
+          if (tokens && track) {
+            await setDislike(tokens, track.id);
+            dispatch(setDislikeTrack(track.id));
+          }
+        } else {
+          if (tokens && track) {
+            await setLike(tokens, track.id);
+            dispatch(likeTrack(track));
+          }
+        }
+      }
+      alert("Ошибка, нет доступа");
+      console.log(error.message);
     }
   };
 

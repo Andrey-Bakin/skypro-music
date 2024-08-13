@@ -67,6 +67,7 @@ export default function Signin() {
               name="email"
               placeholder="Почта"
               value={loginData.email}
+              autoComplete="email"
             />
             <input
               onChange={handleInputChange}
@@ -75,6 +76,7 @@ export default function Signin() {
               name="password"
               placeholder="Пароль"
               value={loginData.password}
+              autoComplete="password"
             />
             <button className={styles.modalBtnEnter} onClick={handleSignin}>
               Войти

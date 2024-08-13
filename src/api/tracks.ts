@@ -18,12 +18,12 @@ export async function getPlaylist(id: string) {
       throw new Error("Ошибка при получении данных");
     }
   
-    const data = await response.json();
-    return data.items;
+    const data = response.json();
+    return data;
   }
 
   export async function fetchFavoritesTracks(access: string) {
-    const response = await fetch(baseUrl + "/track/favorite/all/",
+    const response = await fetch("https://skypro-music-api.skyeng.tech/catalog/track/favorite/all/",
       {
         method: "GET",
         headers: {

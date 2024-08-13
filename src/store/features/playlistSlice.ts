@@ -6,18 +6,17 @@ export const getFavoriteTracks = createAsyncThunk(
   "playlist/getFavoriteTracks",
   async (access: string) => {
     const favoriteTracks = await fetchFavoritesTracks(access);
-    console.log(favoriteTracks);
     return favoriteTracks;
   }
 );
 
-type playlistStateType = {
-  currentTrack: null | TrackType;
+export type playlistStateType = {
+  currentTrack: TrackType | null;
   playlist: TrackType[];
   shuffledPlaylist: TrackType[];
   isShuffle: boolean;
   isPlaying: boolean;
-  currentTrackIndex: number | null;
+  // currentTrackIndex: number | null;
   filterOptions: {
     author: string[];
     genre: string[];
@@ -27,6 +26,8 @@ type playlistStateType = {
   filteredTracks: TrackType[];
   initialTracks: TrackType[];
   likedTracks: TrackType[];
+  isLoading: boolean;
+  error: string | null;
 };
 
 const initialState: playlistStateType = {
@@ -34,7 +35,7 @@ const initialState: playlistStateType = {
   playlist: [],
   shuffledPlaylist: [],
   isShuffle: false,
-  currentTrackIndex: null,
+  // currentTrackIndex: null,
   isPlaying: false,
   filterOptions: {
     author: [],
@@ -45,35 +46,34 @@ const initialState: playlistStateType = {
   filteredTracks: [],
   initialTracks: [],
   likedTracks: [],
+  isLoading: false,
+  error: null,
 };
 
 const playlistSlice = createSlice({
   name: "playlist",
   initialState,
   reducers: {
-    setInitialTracks: (
-      state,
-      action: PayloadAction<{ initialTracks: TrackType[] }>
-    ) => {
-      state.initialTracks = action.payload.initialTracks;
-      state.filteredTracks = action.payload.initialTracks;
+    setInitialTracks: (state, action: PayloadAction<TrackType[]>) => {
+      state.filteredTracks = action.payload;
+      state.initialTracks = action.payload;
     },
     setCurrentTrack: (
       state,
       action: PayloadAction<{
-        track: TrackType;
-        tracksData: TrackType[];
+        currentTrack: TrackType;
+        playlist: TrackType[];
       }>
     ) => {
-      state.currentTrack = action.payload.track;
-      state.playlist = action.payload.tracksData;
-      state.shuffledPlaylist = [...action.payload.tracksData].sort(
+      state.currentTrack = action.payload.currentTrack;
+      state.playlist = action.payload.playlist;
+      state.shuffledPlaylist = [...action.payload.playlist].sort(
         () => 0.5 - Math.random()
       );
-      state.currentTrackIndex = state.playlist.findIndex(
-        (track) => track.id === state.currentTrack?.id
-      );
-      state.isPlaying = true;
+      // state.currentTrackIndex = state.playlist.findIndex(
+      //   (track) => track.id === state.currentTrack?.id
+      // );
+      // state.isPlaying = true;
     },
     setNextTrack: (state) => {
       const playlist = state.isShuffle
@@ -121,19 +121,20 @@ const playlistSlice = createSlice({
         searchValue:
           action.payload.searchValue || state.filterOptions.searchValue,
       };
+
       let filteredArr = state.initialTracks.filter((track) => {
-        const hasAuthors = state.filterOptions.author.length !== 0;
-        const hasGenres = state.filterOptions.genre.length !== 0;
-        const isAuthors = hasAuthors
-          ? state.filterOptions.author.includes(track.author)
-          : true;
-        const isGenres = hasGenres
-          ? state.filterOptions.genre.includes(track.genre)
-          : true;
+        const hasAuthors =
+          state.filterOptions.author.length !== 0
+            ? state.filterOptions.author.includes(track.author)
+            : true;
+        const hasGenres =
+          state.filterOptions.genre.length !== 0
+            ? state.filterOptions.genre.includes(track.genre)
+            : true;
         const hasSearchValue = track.name
           .toLowerCase()
           .includes(state.filterOptions.searchValue.toLowerCase());
-        return isAuthors && isGenres && hasSearchValue;
+        return hasAuthors && hasGenres && hasSearchValue;
       });
 
       switch (state.filterOptions.order) {
@@ -167,11 +168,19 @@ const playlistSlice = createSlice({
         (element) => element.id !== action.payload.id
       );
     },
-    setLikedTracks: (state) => {
-      state.playlist = state.likedTracks;
+    setLikeTrack: (state, action: PayloadAction<TrackType>) => {
+      state.likedTracks.push(action.payload);
     },
-    clearLikedTracks(state) {
-      state.likedTracks = [];
+    setDislikeTrack: (state, action: PayloadAction<number>) => {
+      state.likedTracks = state.likedTracks.filter(
+        (track) => track.id !== action.payload
+      );
+    },
+    setIsLoading: (state, action: PayloadAction<boolean>) => {
+      state.isLoading = action.payload;
+    },
+    setError: (state, action: PayloadAction<string>) => {
+      state.error = action.payload;
     },
   },
   extraReducers(builder) {
@@ -194,7 +203,9 @@ export const {
   setFilters,
   likeTrack,
   dislikeTrack,
-  setLikedTracks,
-  clearLikedTracks,
+  setLikeTrack,
+  setDislikeTrack,
+  setIsLoading,
+  setError,
 } = playlistSlice.actions;
 export const playlistReducer = playlistSlice.reducer;

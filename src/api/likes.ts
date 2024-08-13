@@ -1,9 +1,9 @@
-type likeTrackType ={
-  access: string | null,
-  id: string
-}
+// type likeTrackType ={
+//   access: string | null,
+//   id: string
+// }
 
-export async function setLike({access, id}: likeTrackType) {
+export async function setLike(access: string, id: number) {
     const response = await fetch(
       `https://skypro-music-api.skyeng.tech/catalog/track/${id}/favorite/`,
       {
@@ -22,7 +22,7 @@ export async function setLike({access, id}: likeTrackType) {
     return data;
   }
   
-  export async function setDislike({access, id}: likeTrackType) {
+  export async function setDislike(access: string, id: number) {
     const response = await fetch(
       `https://skypro-music-api.skyeng.tech/catalog/track/${id}/favorite/`,
       {

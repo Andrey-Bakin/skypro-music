@@ -1,16 +1,27 @@
+"use client";
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "./hooks";
-import { clearLikedTracks, getFavoriteTracks } from "../store/features/playlistSlice";
+import { getFavoriteTracks } from "@/store/features/playlistSlice";
+
+
 
 export function useInitialLikedTracks() {
   const dispatch = useAppDispatch();
   const tokens = useAppSelector((state) => state.auth.tokens);
 
   useEffect(() => {
-    if (tokens?.access) {
-      dispatch(getFavoriteTracks(tokens.access))  
-    } else {
-      dispatch(clearLikedTracks())
-    }
-  }, [tokens, dispatch]);
+    const fetchData = async () => {
+      try {
+        if (tokens.access) {
+          await dispatch(getFavoriteTracks(tokens.access));
+        }
+      } catch (error: any) {
+        console.log(error)
+      }
+    };
+
+    fetchData();
+  }, [tokens.access, dispatch]);
 }
+
+

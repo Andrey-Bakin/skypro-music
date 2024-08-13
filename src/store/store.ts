@@ -2,17 +2,17 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { playlistReducer } from "./features/playlistSlice";
 import { authReducer } from "./features/authSlice";
 
-export const makeStore = () => {
+export const rootReduser = combineReducers({
+  playlist: playlistReducer,
+  auth: authReducer,
+});
+
+export const setupStore = () => {
   return configureStore({
-    reducer: combineReducers({
-      playlist: playlistReducer,
-      auth: authReducer,
-    }),
+    reducer: rootReduser,
   });
 };
 
-export type AppStore = ReturnType<typeof makeStore>;
-
 export type RootState = ReturnType<AppStore["getState"]>;
-
+export type AppStore = ReturnType<typeof setupStore>;
 export type AppDispatch = AppStore["dispatch"];

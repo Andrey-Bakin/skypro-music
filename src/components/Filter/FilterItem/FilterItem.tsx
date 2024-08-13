@@ -28,9 +28,7 @@ export default function FilterItem({
 
   const [filterNumber, SetFilterNumber] = useState<number>(0);
 
-  const tracks = useAppSelector((state) => state.playlist.initialTracks);
-
-  const orderList = useAppSelector(
+   const orderList = useAppSelector(
     (state) => state.playlist.filterOptions.order
   );
 

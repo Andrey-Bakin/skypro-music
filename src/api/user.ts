@@ -69,11 +69,11 @@ export async function postToken({ email, password }: SigninType) {
   return data;
 }
 
-export async function postRefreshToken(refreshToken: string) {
+export async function postRefreshToken(refresh: string) {
   const response = await fetch(apiUrlUser + tokenRefresh, {
     method: "POST",
     body: JSON.stringify({
-      refresh: refreshToken,
+      refresh,
     }),
     headers: {
       "content-type": "application/json",

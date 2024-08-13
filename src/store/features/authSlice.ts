@@ -1,20 +1,38 @@
 import { postLoginUser, postRefreshToken, postRegUser, postToken } from "@/api/user";
-import { SigninType, SignupType, TokensType, UserType } from "@/types/types";
+import { AuthStateType, SigninType, SignupType, TokensType, UserType } from "@/types/types";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+
+export function getValueFronLS (key: string) {
+  try {
+    const value = localStorage.getItem(key)
+    return value ? JSON.parse(value) : null;
+  } catch (error) {
+    console.error("ошибка", error);
+  }
+}
+
+export function setValueToLS(key: string, data: any) {
+  try {
+    localStorage.setItem(key, JSON.stringify(data));
+  } catch (error) {
+    console.error("ошибка", error);
+  }
+}
 
 export const getUser = createAsyncThunk(
   "user/getUser",
   async({ email, password }: SigninType) => {
     const user = await postLoginUser({ email, password })
-    return user
+    return user;
   }
-)
+);
 
 export const getTokens = createAsyncThunk(
   "user/getTokens",
   async ({ email, password }: SigninType) => {
-    const tokens = await postToken({ email, password })
-    return tokens
+    const tokens = await postToken({ email, password });
+    setValueToLS("tokens", tokens);
+    return tokens;
   }
 )
 
@@ -29,34 +47,17 @@ export const getSignup = createAsyncThunk(
 export const getNewAccessToken = createAsyncThunk(
   "user/getNewAccessToken",
   async (refresh: string) => {
-    const token = await postRefreshToken(refresh)
-    return token
+    const tokens = await postRefreshToken(refresh);
+    return tokens;
   }
-)
+);
 
-function getValueFronLS (key: string) {
-  try {
-    const value = localStorage.getItem(key)
-    return value ? JSON.parse(value) : null
-  } catch (error) {
-    null
-  }
-}
-
-type AuthStateType = {
-  user: null | UserType,
-  tokens: {
-    access: string | null,
-    refresh: string | null
-  }
-};
-
-const initialState: AuthStateType = {
+const initialState = {
   user: getValueFronLS("user"),
   tokens: {
     access: getValueFronLS("access"),
-    refresh: getValueFronLS("refresh")
-  }
+    refresh: getValueFronLS("refresh"),
+  },
 };
 
 const authSlice = createSlice({
@@ -67,18 +68,21 @@ const authSlice = createSlice({
       state.user = null;
       state.tokens.access = null;
       state.tokens.refresh = null;
+      localStorage.removeItem("user");
+      localStorage.removeItem("tokens");
     },
   },
   extraReducers(builder) {
     builder.addCase(getUser.fulfilled, (state, action: PayloadAction<UserType>) =>{
-      state.user = action.payload
+      state.user = action.payload;
     }).addCase(getTokens.fulfilled, (state, action: PayloadAction<TokensType>) =>{
-      state.tokens.access = action.payload.access;
-      state.tokens.refresh = action.payload.refresh;
+      (state.tokens.access = action.payload.access),
+      (state.tokens.refresh = action.payload.refresh);
     }).addCase(getSignup.fulfilled, (state, action: PayloadAction<UserType>) =>{
       state.user = action.payload;
-    }).addCase(getNewAccessToken.fulfilled, (state, action: PayloadAction<string>) =>{
-      state.tokens.access = action.payload;
+    }).addCase(getNewAccessToken.fulfilled, (state, action: PayloadAction<TokensType>) =>{
+      (state.tokens.access = action.payload.access),
+      (state.tokens.refresh = action.payload.refresh);
     })
   }
 });

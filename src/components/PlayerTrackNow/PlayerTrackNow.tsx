@@ -3,9 +3,8 @@
 import { TrackType } from "@/types/types";
 import styles from "./PlayerTrackNow.module.css";
 import classNames from "classnames";
-import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
-import { useRouter } from "next/navigation";
 import { useLike } from "@/hooks/useLikes";
+import { useInitialLikedTracks } from "@/hooks/initLikes";
 
 type PlayerTrackNowType = {
   track: TrackType;
@@ -14,8 +13,7 @@ type PlayerTrackNowType = {
 export default function PlayerTrackNow({
   track
 }: PlayerTrackNowType) {
-  const router = useRouter();
-  const dispatch = useAppDispatch();
+  useInitialLikedTracks()
   const {isLiked, handleLike} = useLike(track);
       
   return (

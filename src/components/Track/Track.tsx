@@ -7,27 +7,29 @@ import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
 import { setCurrentTrack, setIsPlaying } from "@/store/features/playlistSlice";
 import classNames from "classnames";
 import { useLike } from "@/hooks/useLikes";
+import { useInitialLikedTracks } from "@/hooks/initLikes";
 
 type PlaylistType = {
   track: TrackType;
-  tracksData: TrackType[];
-  isFavorite?: boolean;
 };
 
-export default function Track({ track, tracksData, isFavorite }: PlaylistType) {
+export default function Track({ track }: PlaylistType) {
+  // useInitialLikedTracks();
+  const dispatch = useAppDispatch();
   const currentTrack = useAppSelector((state) => state.playlist.currentTrack);
   const isPlaying = useAppSelector((state) => state.playlist.isPlaying);
-  const { name, author, album, duration_in_seconds, id } = track;
+  const { name, author, album, duration_in_seconds } = track;
   const {isLiked, handleLike} = useLike(track);
-  const isCurrentTrack = currentTrack ? currentTrack.id === id : false;
-  const dispatch = useAppDispatch();
+  const isCurrentTrack = currentTrack?.id === track.id;
+  
+  const filteredTracks = useAppSelector((state) => state.playlist.filteredTracks);
   
   const HandleTrackClick = () => {
-    dispatch(setCurrentTrack({ track: { ...track, isFavorite }, tracksData }));
+    dispatch(setCurrentTrack({ currentTrack: track, playlist: filteredTracks }));
     dispatch(setIsPlaying(true));
   };
 
-    return (
+  return (
     <div onClick={HandleTrackClick} className={styles.playlistItem}>
       <div className={styles.playlistTrack}>
         <div className={styles.trackTitle}>

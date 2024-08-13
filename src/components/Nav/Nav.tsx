@@ -5,15 +5,29 @@ import styles from "./Nav.module.css";
 import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
 import { logout } from "@/store/features/authSlice";
+import { useRouter } from "next/navigation";
 
 export default function Nav() {
-  const userName = useAppSelector((state) => state.auth.user?.username);
+  const isAuth = useAppSelector((state) => state.auth.user?.username);
+  const router = useRouter();
   const dispatch = useAppDispatch();
   const [isOpenedMenu, setIsOpenedMenu] = useState<boolean>(false);
   function toggleMenu() {
     setIsOpenedMenu((prev) => !prev);
   }
+  const tokens = useAppSelector((state) => state.auth.tokens);
+  const handleLogout = () => {
+    dispatch(logout());
+    router.push("/signin");
+  };
 
+  const isAuthTracks = () => {
+    if (tokens.access) {
+      router.push("/tracks/favorite");
+    } else {
+      alert("Авторизуйтесь");
+    }
+  };
   return (
     <nav className={styles.mainNav}>
       <div className={styles.navLogo}>
@@ -44,30 +58,11 @@ export default function Nav() {
                 Главное
               </Link>
             </li>
-            {userName && (
-              <li className={styles.menuItem}>
-                <Link href="/tracks/favorite" className={styles.menuLink}>
-                  Мой плейлист
-                </Link>
-              </li>
-            )}
-            <li className={styles.menuItem}>
-              {userName ? (
-                <div
-                  onClick={() => {
-                    dispatch(logout());
-                    localStorage.removeItem("user");
-                    localStorage.removeItem("token");
-                  }}
-                  className={styles.menuLink}
-                >
-                  Выйти
-                </div>
-              ) : (
-                <Link href="/signin" className={styles.menuLink}>
-                  Войти
-                </Link>
-              )}
+            <li onClick={isAuthTracks} className={styles.menuItem}>
+              Мой плейлист
+            </li>
+            <li onClick={handleLogout} className={styles.menuItem}>
+              {isAuth ? "Выйти" : "Войти"}
             </li>
           </ul>
         </div>

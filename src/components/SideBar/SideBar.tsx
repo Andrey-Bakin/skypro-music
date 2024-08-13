@@ -3,10 +3,8 @@ import Image from "next/image";
 import styles from "./SideBar.module.css";
 import Link from "next/link";
 import User from "../User/User";
-import { useInitialLikedTracks } from "@/hooks/initLikes";
 
 export default function SideBar() {
-  useInitialLikedTracks();
   return (
     <div className={styles.sidebarMain}>
     <User />
