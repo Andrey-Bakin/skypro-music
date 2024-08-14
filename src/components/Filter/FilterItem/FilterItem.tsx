@@ -69,7 +69,7 @@ export default function FilterItem({
           : 0
         : list.length
     );
-  }, [list, value]);
+  }, [list, orderList, value]);
 
   getFilterList();
   return (

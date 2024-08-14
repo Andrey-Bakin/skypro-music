@@ -8,28 +8,29 @@ import { useInitialLikedTracks } from "@/hooks/initLikes";
 import { getFavoriteTracks, setError, setIsLoading } from "@/store/features/playlistSlice";
 
 const FavoriteTracksPage = () => {
-  useInitialLikedTracks()
+  // useInitialLikedTracks()
   const dispatch = useAppDispatch();  
   const tracks = useAppSelector((state) => state.playlist.likedTracks);
   const tokens = useAppSelector((state) => state.auth.tokens);
   const filteredTracks = useAppSelector((state) => state.playlist.filteredTracks);
+
   useEffect(() => {
-    const fetchTracks = async () => {
-      if (tokens.access) {
-        dispatch(setIsLoading(true));
-        try {
-          await dispatch(getFavoriteTracks(tokens.access)).unwrap();
-        } catch (err) {
-          dispatch(setError("Не удалось загрузить треки"));
-          console.log("Ошибка при загрузке треков:", err);
-        } finally {
-          setIsLoading(false);
-        }
+    const loadFavoriteTracks = async () => {
+      if (!tokens.access) return; 
+      dispatch(setIsLoading(true));
+  
+      try {
+        await dispatch(getFavoriteTracks(tokens.access)).unwrap();
+      } catch (error) {
+        dispatch(setError("Не удалось загрузить треки"));
+        console.error("Ошибка при загрузке треков:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
-    
-    // fetchTracks();
-  }, [dispatch, tokens.access, tracks]);
+  
+    loadFavoriteTracks();
+  }, [dispatch, tokens.access]);
 
   console.log(tracks)
  

@@ -1,4 +1,4 @@
-const baseUrl = "https://skypro-music-api.skyeng.tech/catalog";
+export const baseUrl = "https://skypro-music-api.skyeng.tech/catalog";
 
 export async function getTracks() {
     const response = await fetch(baseUrl + "/track/all/");
