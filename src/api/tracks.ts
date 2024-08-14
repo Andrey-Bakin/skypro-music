@@ -23,7 +23,7 @@ export async function getPlaylist(id: string) {
   }
 
   export async function fetchFavoritesTracks(access: string) {
-    const response = await fetch("https://skypro-music-api.skyeng.tech/catalog/track/favorite/all/",
+    const response = await fetch(baseUrl + "/track/favorite/all/",
       {
         method: "GET",
         headers: {

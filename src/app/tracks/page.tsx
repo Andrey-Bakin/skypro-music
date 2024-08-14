@@ -1,6 +1,5 @@
 "use client";
 
-// import useEffectOnce from 'use-effect-once';
 import { getTracks } from "@/api/tracks";
 import CenterBlock from "@/components/CenterBlock/CenterBlock";
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks";

@@ -69,7 +69,8 @@ export default function FilterItem({
           : 0
         : list.length
     );
-  }, [list, orderList, value]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [list, value]);
 
   getFilterList();
   return (
