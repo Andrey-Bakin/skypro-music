@@ -2,28 +2,29 @@
 
 import { getTracks } from "@/api/tracks";
 import CenterBlock from "@/components/CenterBlock/CenterBlock";
-import { useAppDispatch, useAppSelector } from "@/hooks";
-import { setInitialTracks } from "@/store/features/playlistSlice";
-import { TrackType } from "@/types";
+import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
+import { setError, setInitialTracks, setIsLoading } from "@/store/features/playlistSlice";
+import { TrackType } from "@/types/types";
 import { useEffect, useState } from "react";
 import styles from "./layout.module.css";
 import Filter from "@/components/Filter/Filter";
 
 export default function MainTraksPage() {
   const dispatch = useAppDispatch();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [tracks, setTracks] = useState<TrackType[]>([]);
   const filteredTracks = useAppSelector(
     (state) => state.playlist.filteredTracks
   );
 
   useEffect(() => {
-    getTracks().then((tracksData) => {
-      setTracks(tracksData);
-      dispatch(setInitialTracks({ initialTracks: tracksData }));
-      setIsLoading(true);
+    getTracks().then((response: TrackType[]) => {
+      dispatch(setInitialTracks(response));
+      dispatch(setIsLoading(true))
+    }).catch((err) => {
+      console.log(err.message);
+      dispatch(setError("ошибка загрузки треков"))
     });
   }, [dispatch]);
+
   return (
     <>
       <div>
@@ -31,8 +32,6 @@ export default function MainTraksPage() {
         <Filter />
         <CenterBlock
           tracks={filteredTracks}
-          playlist={tracks}
-          isLoading={isLoading}
         />
       </div>
     </>

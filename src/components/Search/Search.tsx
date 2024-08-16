@@ -1,7 +1,7 @@
-"use client"
+"use client";
 import { ChangeEvent, useState } from "react";
 import styles from "./Search.module.css";
-import { useAppDispatch } from "@/hooks";
+import { useAppDispatch } from "@/hooks/hooks";
 import { setFilters } from "@/store/features/playlistSlice";
 
 export default function Search() {
@@ -10,9 +10,9 @@ export default function Search() {
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value);
-    dispatch(setFilters({searchValue: e.target.value}))
+    dispatch(setFilters({ searchValue: e.target.value }));
   };
-  
+
   return (
     <div className={styles.centerblockSearch}>
       <svg className={styles.searchSvg}>
@@ -25,6 +25,7 @@ export default function Search() {
         name="search"
         value={searchValue}
         onChange={handleChange}
+        data-testid="search"
       />
     </div>
   );

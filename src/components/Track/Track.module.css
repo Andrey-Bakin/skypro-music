@@ -19,6 +19,7 @@
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  margin-right: 24px;
 }
 
 .trackTitle {
@@ -83,10 +84,6 @@
     }
   }
 
-/* .trackTitleText {
-    font-style: normal;
-  } */
-
 .trackTitleLink {
   font-style: normal;
   font-weight: 400;
@@ -135,16 +132,24 @@
 }
 
 .trackTime {
+  width: 100px;
   display: flex;
+  justify-content: flex-start;
   align-items: center;
+  gap: 17px;
 }
 
 .trackTimeSvg {
   width: 14px;
   height: 12px;
-  margin-right: 17px;
   fill: transparent;
   stroke: #696969;
+}
+
+.activeLike {
+  fill: #AD61FF;
+  width: 14px;
+  height: 12px;
 }
 
 .trackTimeText {
@@ -152,7 +157,6 @@
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
-  text-align: right;
+  text-align: left;
   color: #696969;
-  margin-right: 24px;
 }

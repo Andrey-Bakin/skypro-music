@@ -36,12 +36,6 @@
   cursor: pointer;
 }
 
-/* .btnText:active {
-  border-color: #ad61ff;
-  color: #ad61ff;
-  cursor: pointer;
-} */
-
 .activeFilter {
   border-color: #ad61ff;
   color: #ad61ff;

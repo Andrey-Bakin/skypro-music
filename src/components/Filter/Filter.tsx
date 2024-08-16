@@ -3,7 +3,7 @@ import { useState } from "react";
 import styles from "./Filter.module.css";
 import FilterItem from "./FilterItem/FilterItem";
 import { filters, order } from "./data";
-import { useAppSelector } from "@/hooks";
+import { useAppSelector } from "@/hooks/hooks";
 
 export default function Filter() {
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
