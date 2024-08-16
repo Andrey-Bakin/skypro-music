@@ -7,14 +7,12 @@ import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
 import { setCurrentTrack, setIsPlaying } from "@/store/features/playlistSlice";
 import classNames from "classnames";
 import { useLike } from "@/hooks/useLikes";
-import { useInitialLikedTracks } from "@/hooks/initLikes";
 
 type PlaylistType = {
   track: TrackType;
 };
 
 export default function Track({ track }: PlaylistType) {
-  // useInitialLikedTracks();
   const dispatch = useAppDispatch();
   const currentTrack = useAppSelector((state) => state.playlist.currentTrack);
   const isPlaying = useAppSelector((state) => state.playlist.isPlaying);

@@ -42,7 +42,11 @@ export async function postRegUser({ email, password, username }: SignupType) {
     },
   })
   if (response.status === 400) {
-    throw new Error("не удалось зарегистрировать пользователя")
+    const errorData = await response.json();
+    throw {
+      status: 400,
+      data: errorData,
+    };
 
   } else if (response.status === 500) {
     throw new Error("Сервер сломался")

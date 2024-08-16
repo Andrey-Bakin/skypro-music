@@ -3,7 +3,7 @@
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
 import { useRouter } from "next/navigation";
 import styles from "./User.module.css";
-import { getNewAccessToken, logout } from "@/store/features/authSlice";
+import { logout } from "@/store/features/authSlice";
 import { useEffect, useState } from "react";
 import { useInitialLikedTracks } from "@/hooks/initLikes";
 

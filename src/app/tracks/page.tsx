@@ -11,13 +11,9 @@ import Filter from "@/components/Filter/Filter";
 
 export default function MainTraksPage() {
   const dispatch = useAppDispatch();
-  // const [isLoading, setIsLoading] = useState<boolean>(false);
-  // const [tracks, setTracks] = useState<TrackType[]>([]);
   const filteredTracks = useAppSelector(
     (state) => state.playlist.filteredTracks
   );
-
-  // const tracks = await getTracks()
 
   useEffect(() => {
     getTracks().then((response: TrackType[]) => {
@@ -36,7 +32,6 @@ export default function MainTraksPage() {
         <Filter />
         <CenterBlock
           tracks={filteredTracks}
-          // playlist={filteredTracks}
         />
       </div>
     </>

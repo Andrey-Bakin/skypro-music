@@ -1,8 +1,3 @@
-// type likeTrackType ={
-//   access: string | null,
-//   id: string
-// }
-
 export async function setLike(access: string, id: number) {
     const response = await fetch(
       `https://skypro-music-api.skyeng.tech/catalog/track/${id}/favorite/`,

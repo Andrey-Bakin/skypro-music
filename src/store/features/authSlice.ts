@@ -1,5 +1,5 @@
 import { postLoginUser, postRefreshToken, postRegUser, postToken } from "@/api/user";
-import { AuthStateType, SigninType, SignupType, TokensType, UserType } from "@/types/types";
+import { SigninType, SignupType, TokensType, UserType } from "@/types/types";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export function getValueFronLS (key: string) {

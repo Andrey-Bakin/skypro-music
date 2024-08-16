@@ -1,6 +1,6 @@
 import { TrackType } from "@/types/types";
 import { setDislike, setLike } from "@/api/likes";
-import { dislikeTrack, likeTrack, setDislikeTrack } from "@/store/features/playlistSlice";
+import { likeTrack, setDislikeTrack } from "@/store/features/playlistSlice";
 import { postRefreshToken } from "@/api/user";
 import { getNewAccessToken } from "@/store/features/authSlice";
 import { useAppDispatch, useAppSelector } from "./hooks";

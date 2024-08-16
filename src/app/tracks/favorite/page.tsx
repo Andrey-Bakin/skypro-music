@@ -3,12 +3,10 @@
 import CenterBlock from "@/components/CenterBlock/CenterBlock";
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
 import styles from "../layout.module.css";
-import { useEffect, useState } from "react";
-import { useInitialLikedTracks } from "@/hooks/initLikes";
+import { useEffect } from "react";
 import { getFavoriteTracks, setError, setIsLoading } from "@/store/features/playlistSlice";
 
 const FavoriteTracksPage = () => {
-  // useInitialLikedTracks()
   const dispatch = useAppDispatch();  
   const tracks = useAppSelector((state) => state.playlist.likedTracks);
   const tokens = useAppSelector((state) => state.auth.tokens);

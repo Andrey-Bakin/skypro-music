@@ -16,7 +16,6 @@ export type playlistStateType = {
   shuffledPlaylist: TrackType[];
   isShuffle: boolean;
   isPlaying: boolean;
-  // currentTrackIndex: number | null;
   filterOptions: {
     author: string[];
     genre: string[];
@@ -35,7 +34,6 @@ const initialState: playlistStateType = {
   playlist: [],
   shuffledPlaylist: [],
   isShuffle: false,
-  // currentTrackIndex: null,
   isPlaying: false,
   filterOptions: {
     author: [],
@@ -70,10 +68,6 @@ const playlistSlice = createSlice({
       state.shuffledPlaylist = [...action.payload.playlist].sort(
         () => 0.5 - Math.random()
       );
-      // state.currentTrackIndex = state.playlist.findIndex(
-      //   (track) => track.id === state.currentTrack?.id
-      // );
-      // state.isPlaying = true;
     },
     setNextTrack: (state) => {
       const playlist = state.isShuffle
