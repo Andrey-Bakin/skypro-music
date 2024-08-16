@@ -16,6 +16,7 @@ export default function Signin() {
     email: "",
     password: "",
   });
+  const [error, setError] = useState<string | null>(null);
   
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -27,23 +28,51 @@ export default function Signin() {
     });
   };
 
-  const handleSignin = async (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
+  const validateForm = (e: React.MouseEvent<HTMLButtonElement>): boolean => {
+    e.preventDefault();
+    
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const minimumPasswordLength = 8;
+  
+    if (!loginData.email || !loginData.password) {
+      setError("Введите почту и пароль");
+      return false;
+    }
+  
+    if (!emailRegex.test(loginData.email)) {
+      setError("Введите корректный адрес электронной почты");
+      return false;
+    }
+  
+    if (loginData.password.length < minimumPasswordLength) {
+      setError(`Пароль должен содержать минимум ${minimumPasswordLength} символов`);
+      return false;
+    }
+  
+    return true;
+  };
+  
+
+  async function handleSignin(e: React.MouseEvent<HTMLButtonElement>) {
+    e.preventDefault();
+    if (!validateForm(e)) return;
+    
     try {
       await Promise.all([
-        dispatch(getTokens(loginData)).unwrap().then((data) => {
-          localStorage.setItem("access", JSON.stringify(data.access));
-          localStorage.setItem("refresh", JSON.stringify(data.refresh))
-        }),
-        dispatch(getUser(loginData)).unwrap().then((data) => {
-          localStorage.setItem("user", JSON.stringify(data))
-        })
-      ])
-      router.push("/")      
-    } catch (error) {
-      console.log(error)
+        dispatch(getTokens(loginData)).unwrap(),
+        dispatch(getUser(loginData)).unwrap(),
+      ]);
+      router.push("/");
+    } catch (error: unknown) { // Используйте unknown вместо any
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('Пользователь с таким email или паролем не найден');
+      }
     }
-  };
+  }
+   
+  console.log(error)
 
   return (
     <div className={styles.wrapper}>
@@ -78,6 +107,7 @@ export default function Signin() {
               value={loginData.password}
               autoComplete="password"
             />
+            {error && <p className={styles.error}>{error}</p>}
             <button className={styles.modalBtnEnter} onClick={handleSignin}>
               Войти
             </button>
