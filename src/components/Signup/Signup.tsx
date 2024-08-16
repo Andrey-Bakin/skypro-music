@@ -52,23 +52,36 @@ const Signup = () => {
     }
     return true;
   };
+
+  interface ErrorResponse {
+    status: number;
+    data: {
+      username?: string[];
+      email?: string[];
+      password?: string[];
+    };
+  }
+
   async function handleSubmit(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
     if (!validateForm(e)) return;
+  
     try {
       await postRegUser(formData);
       router.push("/signin");
-    } catch (error: any) {
-      if (error.status === 400) {
-        const errorData = error.data;
-
+    } catch (error: unknown) { // Используем unknown вместо any
+      const err = error as ErrorResponse; // Приводим к ожидаемому типу
+  
+      if (err.status === 400) {
+        const errorData = err.data;
+  
         if (errorData.username) {
           setError(errorData.username[0]);
         } else if (errorData.email) {
           setError(errorData.email[0]);
         } else if (errorData.password) {
           const passwordErrors = errorData.password;
-
+  
           if (
             passwordErrors.includes(
               "Введённый пароль слишком короткий. Он должен содержать как минимум 8 символов."
@@ -94,6 +107,8 @@ const Signup = () => {
       }
     }
   }
+  
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.containerSignup}>
@@ -143,7 +158,6 @@ const Signup = () => {
               autoComplete="newPassword"
             />
             {error && <p className={styles.error}>{error}</p>}
-
             <button onClick={handleSubmit} className={styles.modalBtnSignupEnt}>
               <a>Зарегистрироваться</a>
             </button>

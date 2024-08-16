@@ -141,7 +141,8 @@
   background-color: #271a58;
 }
 .error {
-  font-size: 10px;
+  text-align: center;
+  font-size: 12px;
   color: red;
   position: relative;
 }
